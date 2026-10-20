@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ContactButton from '../../components/ContactButton.astro';
+import PostalAddress from '../../components/PostalAddress.astro';
 import { compiledContent as licenseHtml } from '../../../LICENSE.md';
 import { formatDate, langStaticPaths, useTranslations } from '../../i18n/utils';
 import type { Lang } from '../../i18n/ui';
@@ -12,13 +13,13 @@ const t = useTranslations(lang);
 
 /** Publisher details. Rows with an empty value are not displayed. */
 const publisher = [
-  { label: t('legal.publisher.seat'), value: '15A rue Valentin Gaumont, 27200 Vernon, France' },
+  { label: t('legal.publisher.seat'), address: true },
   { label: t('legal.publisher.rna'), value: 'W271007328' },
   { label: t('legal.publisher.founded'), value: formatDate(new Date('2026-07-13'), lang) },
   { label: t('legal.publisher.declared'), value: formatDate(new Date('2026-07-27'), lang) },
   { label: t('legal.publisher.joafe'), value: formatDate(new Date('2026-08-11'), lang) },
   { label: t('legal.publisher.president'), value: 'Jean Mercadier' },
-].filter((row) => row.value);
+].filter((row) => row.address || row.value);
 
 /**
  * LICENSE.md (repository root) is the single source of the licence terms.
@@ -46,7 +47,7 @@ const note = t('legal.translationNote');
       {publisher.map((row) => (
         <div>
           <dt>{row.label}</dt>
-          <dd>{row.value}</dd>
+          <dd>{row.address ? <PostalAddress from={1} inline /> : row.value}</dd>
         </div>
       ))}
       <div>

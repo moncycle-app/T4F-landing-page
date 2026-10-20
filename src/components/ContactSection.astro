@@ -1,6 +1,7 @@
 ---
 import SectionHeading from './SectionHeading.astro';
 import ContactButton from './ContactButton.astro';
+import PostalAddress from './PostalAddress.astro';
 import { sectionIds, type Lang } from '../i18n/ui';
 import { useTranslations } from '../i18n/utils';
 
@@ -25,10 +26,7 @@ const t = useTranslations(lang);
       <div class="contact-card">
         <h3>{t('contact.address')}</h3>
         <address>
-          Tech 4 Fertility<br />
-          15A rue Valentin Gaumont<br />
-          27200 Vernon<br />
-          France
+          <PostalAddress />
         </address>
       </div>
     </div>

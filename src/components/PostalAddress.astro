@@ -1,0 +1,39 @@
+---
+/**
+ * Anti-crawler postal address: it is stored letter by letter (never as a word or a line) and built
+ * client-side, one letter at a time. Without JavaScript nothing is displayed.
+ * Lines: 0 = name, 1 = street, 2 = postcode and city, 3 = country.
+ * Defaults to the full address; `from` / `to` (exclusive) pick some of the lines.
+ */
+interface Props {
+  from?: number;
+  to?: number;
+  /** Join the lines with ", " instead of line breaks */
+  inline?: boolean;
+}
+const { from = 0, to = 4, inline = false } = Astro.props;
+
+const letters = [
+  ['T', 'e', 'c', 'h', ' ', '4', ' ', 'F', 'e', 'r', 't', 'i', 'l', 'i', 't', 'y'],
+  ['1', '5', 'A', ' ', 'r', 'u', 'e', ' ', 'V', 'a', 'l', 'e', 'n', 't', 'i', 'n', ' ', 'G', 'a', 'u', 'm', 'o', 'n', 't'],
+  ['2', '7', '2', '0', '0', ' ', 'V', 'e', 'r', 'n', 'o', 'n'],
+  ['F', 'r', 'a', 'n', 'c', 'e'],
+];
+// Character codes, with 10 as the line break, so even the HTML only holds numbers
+const codes = letters
+  .slice(from, to)
+  .map((line) => line.map((c) => c.charCodeAt(0)))
+  .flatMap((line, i) => (i ? [inline ? 44 : 10, ...(inline ? [32] : []), ...line] : line))
+  .join(',');
+---
+
+<span data-addr={codes}></span>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-addr]').forEach((el) => {
+    for (const code of el.dataset.addr!.split(',')) {
+      const c = Number(code);
+      el.append(c === 10 ? document.createElement('br') : String.fromCharCode(c));
+    }
+  });
+</script>

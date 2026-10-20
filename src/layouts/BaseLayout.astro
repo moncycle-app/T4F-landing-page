@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Logo from '../components/Logo.astro';
 import LanguagePicker from '../components/LanguagePicker.astro';
 import ContactButton from '../components/ContactButton.astro';
+import PostalAddress from '../components/PostalAddress.astro';
 import { langs, links, sectionKeys, type Lang, type UiKey } from '../i18n/ui';
 import { localizedPath, sectionPath, useTranslations } from '../i18n/utils';
 import { newsPath, newsRssPath, newsSegment } from '../i18n/news';
@@ -128,7 +129,7 @@ const sectionLinks = sectionKeys.map((key) => ({
             <h2>{t('footer.contact')}</h2>
             <ul>
               <li><ContactButton variant="link" /></li>
-              <li>15A rue Valentin Gaumont,<br />27200 Vernon</li>
+              <li><PostalAddress from={1} to={3} /></li>
             </ul>
           </div>
         </div>

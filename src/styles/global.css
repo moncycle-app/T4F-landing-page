@@ -28,6 +28,8 @@
   --field-border: #8a8170;
   --phone-frame: #1f1c16;
   --shadow: 0 1px 2px rgba(31, 28, 22, .04), 0 16px 36px -24px rgba(31, 28, 22, .2);
+  --img-border: rgba(31, 28, 22, .18);
+  --img-shadow: 0 2px 6px rgba(31, 28, 22, .08), 0 18px 40px -12px rgba(31, 28, 22, .3);
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, ui-serif, serif;
   --header-h: 68px;
 }
@@ -49,6 +51,8 @@
     --field-border: #8d8672;
     --phone-frame: #3a3426;
     --shadow: none;
+    --img-border: rgba(243, 239, 226, .35);
+    --img-shadow: 0 0 32px -4px rgba(243, 239, 226, .16);
   }
 }
 
@@ -962,7 +966,7 @@ h2::before {
 .prose h2 { margin: 2.5rem 0 .6rem; }
 .prose h3 { margin: 2rem 0 .5rem; font-size: 1.1rem; }
 .prose a { color: inherit; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 3px; }
-.prose img { display: block; max-width: 100%; max-height: 30rem; width: auto; height: auto; margin: 1.5rem 0; border-radius: 12px; cursor: zoom-in; }
+.prose img { display: block; max-width: 100%; max-height: 30rem; width: auto; height: auto; margin: 1.5rem 0; border: 1px solid var(--img-border); border-radius: 12px; box-shadow: var(--img-shadow); cursor: zoom-in; }
 .prose img:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 /* Size set by the author with the image title: ![alt](/images/news/x.png "small") */
 .prose img[title="xs"] { max-height: 14rem; }
