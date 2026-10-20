@@ -1,0 +1,3 @@
+# Netlify / Cloudflare Pages: let any website fetch the news metadata (CORS).
+/latest-news.json
+  Access-Control-Allow-Origin: *

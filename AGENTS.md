@@ -111,6 +111,10 @@ Markdown content…
 - `/latest-news.json` (`src/pages/latest-news.json.ts`): metadata (no content) of the latest published post of
   each language with `showInThirdParty` on (the previous one is shown when the latest has it off), under the `en` and `fr` keys, for other sites and apps to notify their users. Keep its
   fields stable: external consumers depend on them. Not language-prefixed, as it covers both languages.
+  It must be readable from any website (CORS `Access-Control-Allow-Origin: *`). The route sets the header in dev;
+  in production the file is static, so the web server must send it: `public/_headers` covers Netlify / Cloudflare Pages,
+  any other server needs the equivalent rule for `/latest-news.json` (nginx: `add_header Access-Control-Allow-Origin "*";`,
+  Apache: `Header set Access-Control-Allow-Origin "*"`).
 - Post images: put them in `public/images/news/` and reference them as `/images/news/my-image.jpg`.
 - The home page hero shows a "New" banner linking to the latest post of its language for 30 days after
   `pubDate` (`LatestNews.astro`). Expiry is checked in the browser, so it disappears without a rebuild.
