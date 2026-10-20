@@ -1,0 +1,44 @@
+---
+/**
+ * "New" banner pointing to the latest news post in the page language.
+ * It is shown for 30 days after the post's publication date. The check runs in the browser,
+ * so the banner disappears on time without rebuilding the site. Rendered hidden: it only
+ * appears when the inline script below confirms the post is still recent.
+ */
+import { getPosts, newsPath, postSlug } from '../i18n/news';
+import { formatDate, useTranslations } from '../i18n/utils';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const DAYS_SHOWN = 30;
+
+const [post] = await getPosts(lang);
+const expires = post && new Date(post.data.pubDate.valueOf() + DAYS_SHOWN * 24 * 60 * 60 * 1000);
+---
+
+{/* Already outdated at build time: nothing to render */}
+{post && expires && expires > new Date() && (
+  <a class="news-banner" href={newsPath(lang, postSlug(post))} data-expires={expires.toISOString()} hidden>
+    <span class="news-badge">{t('news.new')}</span>
+    <span class="news-banner-text">
+      <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate, lang)}</time>
+      <span class="news-banner-title">{post.data.title}</span>
+    </span>
+    <span class="news-banner-more">
+      <span class="news-banner-more-label">{t('news.readMore')}</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </span>
+  </a>
+  <script is:inline>
+    (function () {
+      // Runs right after the banner is parsed (before first paint): no layout shift
+      var banner = document.currentScript.previousElementSibling;
+      if (banner && Date.now() < Date.parse(banner.dataset.expires)) banner.hidden = false;
+    })();
+  </script>
+)}

@@ -22,7 +22,7 @@ interface Member {
   /** Optional photo in public/images/ (e.g. /images/team/jean.jpg); initials are shown otherwise */
   photo?: string;
   links: { network: Network; url: string; handle?: string }[];
-  /** Placeholder entry, not displayed until filled in */
+  /** Placeholder entry (dummy data), still to be replaced */
   todo?: boolean;
 }
 
@@ -57,15 +57,12 @@ const members: Member[] = [
       { network: 'linkedin', url: 'https://www.linkedin.com/in/m-jean/' },
     ],
   },
-  // TODO: member 2 (first name, last name, role, social links), then remove `todo: true`
-  { firstName: 'TODO', lastName: 'TODO', role: { fr: 'TODO', en: 'TODO' }, links: [], todo: true },
-  // TODO: member 3 (first name, last name, role, social links), then remove `todo: true`
-  { firstName: 'TODO', lastName: 'TODO', role: { fr: 'TODO', en: 'TODO' }, links: [], todo: true },
-  // TODO: member 4 (first name, last name, role, social links), then remove `todo: true`
-  { firstName: 'TODO', lastName: 'TODO', role: { fr: 'TODO', en: 'TODO' }, links: [], todo: true },
+  // TODO: placeholder members, replace with the real names, roles and social links (then remove `todo: true`)
+  { firstName: 'Camille', lastName: 'Martin', role: { fr: 'Trésorière', en: 'Treasurer' }, links: [], todo: true },
+  { firstName: 'Alex', lastName: 'Durand', role: { fr: 'Secrétaire', en: 'Secretary' }, links: [], todo: true },
+  { firstName: 'Sam', lastName: 'Leroy', role: { fr: 'Membre du bureau', en: 'Board member' }, links: [], todo: true },
 ];
 
-const visible = members.filter((m) => !m.todo);
 ---
 
 <section class="section section-team" id={sectionIds[lang].team} aria-labelledby="team-title">
@@ -73,7 +70,7 @@ const visible = members.filter((m) => !m.todo);
     <SectionHeading index={index} total={total} id="team-title" title={t('team.title')} lead={t('team.lead')} />
 
     <ul class="team">
-      {visible.map((m) => {
+      {members.map((m) => {
         const name = `${m.firstName} ${m.lastName}`;
         return (
           <li class="member">

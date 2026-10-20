@@ -24,7 +24,6 @@ interface Project {
   baseline: Localized;
   description: Localized;
   points: Localized<string[]>;
-  quote?: Localized;
   figures?: { value: number; label: Localized }[];
   /** Where the figures come from */
   figuresNote?: Localized;
@@ -46,30 +45,22 @@ const projects: Project[] = [
       en: 'Making menstrual cycle tracking and natural methods easy to use.',
     },
     description: {
-      fr: 'Application web de suivi du cycle menstruel pour les méthodes naturelles de régulation des naissances : Billings, FertilityCare et suivi de la température.',
-      en: 'A web app for tracking the menstrual cycle with natural family planning methods: Billings, FertilityCare and temperature tracking.',
+      fr: 'Application web de suivi du cycle menstruel pour les méthodes naturelles de régulation des naissances.',
+      en: 'A web app for tracking the menstrual cycle with natural family planning methods.',
     },
     points: {
       fr: [
-        '100 % compatible Billings et FertilityCare',
-        'Glaire cervicale et température',
         'Gratuite, sans publicité, sans vente de données',
         'Hébergée et développée en France',
         'Open source (CC BY-NC-SA)',
         'Sans IA ni prédiction',
       ],
       en: [
-        '100% compatible with Billings and FertilityCare',
-        'Cervical mucus and temperature',
         'Free, no ads, no data sales',
         'Hosted and developed in France',
         'Open source (CC BY-NC-SA)',
         'No AI, no predictions',
       ],
-    },
-    quote: {
-      fr: 'Vous restez le cerveau derrière votre tableau.',
-      en: 'You remain the brain behind your chart.',
     },
     figures: [
       { value: 1900, label: { fr: 'femmes et couples', en: 'women and couples' } },
@@ -85,7 +76,6 @@ const projects: Project[] = [
 
 const number = new Intl.NumberFormat(lang === 'fr' ? 'fr-FR' : 'en-GB');
 const statusLabel = { live: t('projects.status.live') };
-const quote = (text: string) => (lang === 'fr' ? `«\u00a0${text}\u00a0»` : `“${text}”`);
 ---
 
 <section class="section section-projects" id={sectionIds[lang].projects} aria-labelledby="projects-title">
@@ -107,13 +97,6 @@ const quote = (text: string) => (lang === 'fr' ? `«\u00a0${text}\u00a0»` : `�
             <ul class="tags">
               {p.points[lang].map((point) => <li>{point}</li>)}
             </ul>
-
-            {p.quote && (
-              <figure class="project-quote">
-                <blockquote><p>{quote(p.quote[lang])}</p></blockquote>
-                <figcaption>{p.name}</figcaption>
-              </figure>
-            )}
 
             {p.figures && (
               <figure class="figures">

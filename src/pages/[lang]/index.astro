@@ -1,11 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import CycleMotif from '../../components/CycleMotif.astro';
 import AssociationSection from '../../components/AssociationSection.astro';
 import ProjectsSection from '../../components/ProjectsSection.astro';
 import TeamSection from '../../components/TeamSection.astro';
 import DonateSection from '../../components/DonateSection.astro';
 import ContactSection from '../../components/ContactSection.astro';
+import LatestNews from '../../components/LatestNews.astro';
 import { langStaticPaths, sectionPath, useTranslations } from '../../i18n/utils';
 import type { Lang } from '../../i18n/ui';
 
@@ -20,7 +20,6 @@ const sections = [AssociationSection, ProjectsSection, TeamSection, DonateSectio
 
 <BaseLayout lang={lang} title={t('home.title')} description={t('home.description')} mainClass="home">
   <section class="hero" aria-labelledby="hero-title">
-    <CycleMotif class="hero-cycle" />
     <div class="wrap">
       <p class="badge"><span class="badge-dot" aria-hidden="true"></span>{t('site.badge')}</p>
       <h1 id="hero-title">
@@ -32,6 +31,7 @@ const sections = [AssociationSection, ProjectsSection, TeamSection, DonateSectio
         <a class="btn btn-primary" href={sectionPath(lang, 'projects')}>{t('hero.ctaProjects')}</a>
         <a class="btn btn-ghost" href={sectionPath(lang, 'donate')}>{t('hero.ctaDonate')}</a>
       </p>
+      <LatestNews lang={lang} />
     </div>
   </section>
 

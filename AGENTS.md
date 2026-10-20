@@ -103,6 +103,8 @@ Markdown content…
   `fr/bienvenue.md` and `en/welcome.md`). The language picker and the `hreflang` tags then link the two
   versions. Without a translation, the picker falls back to the news list.
 - Post images: put them in `public/images/news/` and reference them as `/images/news/my-image.jpg`.
+- The home page hero shows a "New" banner linking to the latest post of its language for 30 days after
+  `pubDate` (`LatestNews.astro`). Expiry is checked in the browser, so it disappears without a rebuild.
 
 ## Conventions
 

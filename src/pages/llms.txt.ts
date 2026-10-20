@@ -46,7 +46,7 @@ export const GET: APIRoute = async ({ site }) => {
     '',
     '## Projects',
     '',
-    `- [moncycle.app](${links.moncycle}): free, ad-free, open-source web app for tracking the menstrual cycle with natural family planning methods (Billings, FertilityCare, temperature). Source code: ${links.moncycleSource}`,
+    `- [moncycle.app](${links.moncycle}): free, ad-free, open-source web app for tracking the menstrual cycle with natural family planning methods. Source code: ${links.moncycleSource}`,
     '',
     ...postSections,
   ].join('\n');

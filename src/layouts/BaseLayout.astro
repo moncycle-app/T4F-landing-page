@@ -43,7 +43,7 @@ const sectionLinks = sectionKeys.map((key) => ({
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#fbf8f1" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#15130d" media="(prefers-color-scheme: dark)" />
     <link rel="canonical" href={canonical} />
     {langs.map((code) => (
@@ -62,6 +62,8 @@ const sectionLinks = sectionKeys.map((key) => ({
     <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
     <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <!-- Lets CSS collapse the mobile menu only when the script that opens it can run -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
   </head>
   <body>
     <header class="top">
@@ -69,13 +71,17 @@ const sectionLinks = sectionKeys.map((key) => ({
         <a class="home-link" href={localizedPath(lang)} aria-label={`${t('site.title')} – ${t('nav.home')}`}>
           <Logo />
         </a>
-        <nav class="nav" aria-label={t('nav.main')}>
+        <nav class="nav" id="site-nav" aria-label={t('nav.main')}>
           {sectionLinks.map((link) => (
             <a href={link.href} class:list={{ 'nav-donate': link.key === 'donate' }}>{link.label}</a>
           ))}
           <a href={newsPath(lang)} aria-current={section === newsSegment[lang] ? 'page' : undefined}>{t('nav.news')}</a>
         </nav>
         <LanguagePicker lang={lang} alternates={alternates} />
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+          <span class="sr-only">{t('nav.menu')}</span>
+          <span class="menu-icon" aria-hidden="true"><span></span></span>
+        </button>
       </div>
     </header>
 
@@ -130,5 +136,27 @@ const sectionLinks = sectionKeys.map((key) => ({
         </p>
       </div>
     </footer>
+
+    <script>
+      // Mobile menu: the toggle only shows below the desktop breakpoint (see .menu-toggle in global.css)
+      const header = document.querySelector<HTMLElement>('.top');
+      const toggle = header?.querySelector<HTMLButtonElement>('.menu-toggle');
+      if (header && toggle) {
+        const setOpen = (open: boolean) => {
+          header.classList.toggle('open', open);
+          toggle.setAttribute('aria-expanded', String(open));
+        };
+        toggle.addEventListener('click', () => setOpen(!header.classList.contains('open')));
+        // Close after choosing a link, on Escape, and when switching to the desktop layout
+        header.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && header.classList.contains('open')) {
+            setOpen(false);
+            toggle.focus();
+          }
+        });
+        matchMedia('(min-width: 960px)').addEventListener('change', () => setOpen(false));
+      }
+    </script>
   </body>
 </html>
