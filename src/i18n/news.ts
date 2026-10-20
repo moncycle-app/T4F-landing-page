@@ -15,6 +15,11 @@ export function newsPath(lang: Lang, slug?: string): string {
   return localizedPath(lang, slug ? `${newsSegment[lang]}/${slug}` : newsSegment[lang]);
 }
 
+/** URL of the news RSS feed: /en/news/rss.xml, /fr/actualites/rss.xml */
+export function newsRssPath(lang: Lang): string {
+  return `${newsPath(lang)}rss.xml`;
+}
+
 /** Language of a post, from its folder (fr/ or en/). */
 export function postLang(post: NewsPost): Lang {
   const [lang] = post.id.split('/');

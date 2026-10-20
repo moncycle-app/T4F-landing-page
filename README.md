@@ -6,7 +6,8 @@ association. The site is bilingual: every page exists in English (`/en/…`) and
 It currently contains:
 
 - a home page (`/en/`, `/fr/`);
-- a **news** section: "News" in English (`/en/news/`), "Actualités" in French (`/fr/actualites/`);
+- a **news** section: "News" in English (`/en/news/`), "Actualités" in French (`/fr/actualites/`),
+  with an RSS feed per language;
 - a legal information page (`/en/legal/`, `/fr/legal/`).
 
 Most of this README is for **people who want to publish news**. You only need to know Markdown:
@@ -111,7 +112,7 @@ draft: false
 | Field            | Required | What it does                                                                                                  |
 | ---------------- | -------- | ------------------------------------------------------------------------------------------------------------- |
 | `title`          | yes      | Title of the post. Shown as the big heading of the page, in the news list and in the browser tab.            |
-| `description`    | yes      | One or two sentences summarising the post. Shown under the title, in the news list, and by search engines and social networks when the link is shared. |
+| `description`    | yes      | Short summary of the post: **about 160 characters, 300 at most**. Shown in the news list, by search engines, social networks, the RSS feed and apps (see [Writing the description](#writing-the-description)). |
 | `pubDate`        | yes      | Publication date, in the `YYYY-MM-DD` format (`2026-11-15`). Posts are listed newest first.                   |
 | `updatedDate`    | no       | Date of a significant update, same format. Displayed as "Updated on…" next to the publication date. Remove the line if there was no update. |
 | `translationKey` | yes      | Identifier shared by the two translations of a post (see [Translations](#translations)). Any short word or phrase with lowercase letters and hyphens. |
@@ -119,6 +120,28 @@ draft: false
 
 You do not write the date in the text, nor the title again: the site displays both automatically,
 formatted for the reader's language ("15 November 2026" / "15 novembre 2026").
+
+#### Writing the description
+
+The `description` is the only summary of your post, and it is reused in many places, often **without
+the rest of the page around it**:
+
+- the **news list** of the website, under the post title;
+- **search engine results** (Google, Bing…) and the preview of the link when it is shared on social
+  networks or messaging apps;
+- the **RSS feed**, where people read it in their feed reader before deciding to open the post;
+- the **notifications and news banners of other websites and apps**, which use it to tell their users
+  there is something new to read (through `/latest-news.json`).
+
+How to write it:
+
+- **Aim for about 160 characters** (one or two short sentences). Search engines cut longer texts
+  after roughly that length, so put the important part first.
+- **300 characters at most**: the build fails beyond that.
+- **Make it self-contained**: it is often read without the title next to it, so do not rely on the
+  rest of the page to be understood.
+- Say what the reader will learn or gain, and do not just repeat the title.
+- Plain text only: no Markdown, no line breaks.
 
 #### Header pitfalls
 
@@ -224,6 +247,16 @@ The site uses typographic apostrophes (`’`) and, in French, non-breaking space
 `?`, `!` and inside `« »`. Straight apostrophes (`'`) and regular spaces work too; consistency
 within a post matters more than perfection.
 
+### RSS feed
+
+Each language has an RSS feed listing its published posts, newest first: `/en/news/rss.xml` and
+`/fr/actualites/rss.xml`. It is generated automatically, you have nothing to do except write a good
+`description`. Drafts never appear in it.
+
+The latest published post of each language is also available as JSON, without its content, at
+[`/latest-news.json`](https://tech4fertility.org/latest-news.json). Other websites and apps use it to
+tell their users there is news to read. Nothing to do on your side either.
+
 ### Translations
 
 Posts do not have to be translated, but when they are, the two files must be linked:
@@ -305,7 +338,7 @@ Build errors are reported by the maintainer reviewing your pull request. The usu
 
 | Symptom                                                                   | Likely cause and fix                                                                                      |
 | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| The build fails and the message mentions your file and a field name       | A required field is missing, misspelled (`pubdate` instead of `pubDate`: names are case-sensitive), or has the wrong format (date not in `YYYY-MM-DD`). |
+| The build fails and the message mentions your file and a field name       | A required field is missing, the `description` is longer than 300 characters, misspelled (`pubdate` instead of `pubDate`: names are case-sensitive), or has the wrong format (date not in `YYYY-MM-DD`). |
 | The build fails on a line of the header that contains `:`                 | Put the value between double quotes (see [Header pitfalls](#header-pitfalls)).                            |
 | The build fails with "is not inside a language folder"                    | Move the file into `src/content/news/en/` or `src/content/news/fr/`.                                      |
 | The post does not appear on the published site                           | It is still `draft: true`, or the file does not end in `.md`.                                              |
@@ -318,7 +351,7 @@ Build errors are reported by the maintainer reviewing your pull request. The usu
 
 - [ ] The file is in `src/content/news/en/` or `src/content/news/fr/` and ends in `.md`.
 - [ ] The file name is lowercase, with hyphens, no spaces or accents.
-- [ ] `title`, `description`, `pubDate` and `translationKey` are filled in.
+- [ ] `title`, `description` (about 160 characters, 300 at most), `pubDate` and `translationKey` are filled in.
 - [ ] `draft: false` (or no `draft` line) if the post must be published.
 - [ ] Sections start at `##`.
 - [ ] Every image is in `public/images/news/`, is reasonably light and has a description.

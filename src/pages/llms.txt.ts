@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { getPosts, newsPath, postLang, postSlug } from '../i18n/news';
+import { getPosts, newsPath, newsRssPath, postLang, postSlug } from '../i18n/news';
 import { defaultLang, languages, langs, links, ui } from '../i18n/ui';
 import { localizedPath } from '../i18n/utils';
 
@@ -16,6 +16,7 @@ export const GET: APIRoute = async ({ site }) => {
   const pages = order.flatMap((lang) => [
     `- [${ui[lang]['nav.home']} (${languages[lang]})](${url(localizedPath(lang))}): ${ui[lang]['home.description']}`,
     `- [${ui[lang]['news.title']} (${languages[lang]})](${url(newsPath(lang))}): ${ui[lang]['news.description']}`,
+    `- [${ui[lang]['news.rss']} (${languages[lang]})](${url(newsRssPath(lang))}): ${ui[lang]['news.description']}`,
     `- [${ui[lang]['legal.heading']} (${languages[lang]})](${url(localizedPath(lang, 'legal'))}): ${ui[lang]['legal.description']}`,
   ]);
 

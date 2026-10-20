@@ -115,6 +115,7 @@ export const ui = {
     'news.back': '← Toutes les actualités',
     'news.readMore': 'Lire la suite',
     'news.updated': 'Mis à jour le',
+    'news.rss': 'Flux RSS',
 
     'footer.nav': 'Navigation',
     'footer.projects': 'Projets',
@@ -241,6 +242,7 @@ export const ui = {
     'news.back': '← All news',
     'news.readMore': 'Read more',
     'news.updated': 'Updated on',
+    'news.rss': 'RSS feed',
 
     'footer.nav': 'Navigation',
     'footer.projects': 'Projects',

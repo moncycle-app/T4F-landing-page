@@ -5,7 +5,7 @@ import LanguagePicker from '../components/LanguagePicker.astro';
 import ContactButton from '../components/ContactButton.astro';
 import { langs, links, sectionKeys, type Lang, type UiKey } from '../i18n/ui';
 import { localizedPath, sectionPath, useTranslations } from '../i18n/utils';
-import { newsPath, newsSegment } from '../i18n/news';
+import { newsPath, newsRssPath, newsSegment } from '../i18n/news';
 
 interface Props {
   lang: Lang;
@@ -61,6 +61,7 @@ const sectionLinks = sectionKeys.map((key) => ({
     <link rel="icon" href="/images/favicon-light.ico" sizes="32x32" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
     <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+    <link rel="alternate" type="application/rss+xml" title={`${t('news.title')} | ${t('site.title')}`} href={newsRssPath(lang)} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <!-- Lets CSS collapse the mobile menu only when the script that opens it can run -->
     <script is:inline>document.documentElement.classList.add('js');</script>
@@ -105,6 +106,7 @@ const sectionLinks = sectionKeys.map((key) => ({
             <ul>
               {sectionLinks.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
               <li><a href={newsPath(lang)}>{t('nav.news')}</a></li>
+              <li><a href={newsRssPath(lang)}>{t('news.rss')}</a></li>
             </ul>
           </nav>
 

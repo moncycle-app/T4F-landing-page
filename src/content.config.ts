@@ -11,7 +11,8 @@ const news = defineCollection({
   loader: glob({ base: './src/content/news', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     title: z.string(),
-    description: z.string(),
+    // Target 160 characters (search engines cut there), 300 at most
+    description: z.string().max(300),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     translationKey: z.string(),

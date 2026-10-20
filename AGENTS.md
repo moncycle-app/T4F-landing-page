@@ -89,7 +89,7 @@ One post = one Markdown file (`.md`) in its language folder. The file name becom
 ```md
 ---
 title: Post title
-description: Summary shown in the post list and in SEO metadata.
+description: Target 160 characters, 300 max. News list, SEO metadata, RSS feed and /latest-news.json.
 pubDate: 2026-10-20
 updatedDate: 2026-11-02     # optional
 translationKey: my-post     # same value in both languages
@@ -102,6 +102,13 @@ Markdown content…
 - Both translations of a post share the same `translationKey` (slugs may differ, e.g.
   `fr/bienvenue.md` and `en/welcome.md`). The language picker and the `hreflang` tags then link the two
   versions. Without a translation, the picker falls back to the news list.
+- RSS: one feed per language, `/en/news/rss.xml` and `/fr/actualites/rss.xml` (`[lang]/[news]/rss.xml.ts`,
+  `@astrojs/rss`), built from `getPosts` (so drafts are excluded in production) and each post's `description`.
+  Build its URL with `newsRssPath(lang)`. It is advertised in `BaseLayout` (`<link rel="alternate">`),
+  the footer and `llms.txt`.
+- `/latest-news.json` (`src/pages/latest-news.json.ts`): metadata (no content) of the latest published post of
+  each language, under the `en` and `fr` keys, for other sites and apps to notify their users. Keep its
+  fields stable: external consumers depend on them. Not language-prefixed, as it covers both languages.
 - Post images: put them in `public/images/news/` and reference them as `/images/news/my-image.jpg`.
 - The home page hero shows a "New" banner linking to the latest post of its language for 30 days after
   `pubDate` (`LatestNews.astro`). Expiry is checked in the browser, so it disappears without a rebuild.
