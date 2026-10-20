@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getPosts, newsPath, newsSegment, postSlug } from '../../../i18n/news';
+import { formatDate, useTranslations } from '../../../i18n/utils';
+import { langs, type Lang } from '../../../i18n/ui';
+
+// The section name is translated: /en/news/, /fr/actualites/
+export function getStaticPaths() {
+  return langs.map((lang) => ({ params: { lang, news: newsSegment[lang] } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const posts = await getPosts(lang);
+const alternates = Object.fromEntries(langs.map((code) => [code, newsPath(code)])) as Record<Lang, string>;
+---
+
+<BaseLayout lang={lang} title={`${t('news.title')} | Tech4Fertility`} description={t('news.description')} alternates={alternates}>
+  <h1 class="page-title">{t('news.title')}</h1>
+  <p class="lede">{t('news.description')}</p>
+
+  {posts.length === 0 ? (
+    <p class="meta">{t('news.empty')}</p>
+  ) : (
+    <ul class="posts">
+      {posts.map((post) => (
+        <li>
+          <a class="post-card" href={newsPath(lang, postSlug(post))}>
+            <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate, lang)}</time>
+            <h2>{post.data.title}</h2>
+            <p>{post.data.description}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+</BaseLayout>

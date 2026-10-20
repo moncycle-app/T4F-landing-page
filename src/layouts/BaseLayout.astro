@@ -5,6 +5,7 @@ import LanguagePicker from '../components/LanguagePicker.astro';
 import ContactButton from '../components/ContactButton.astro';
 import { langs, type Lang } from '../i18n/ui';
 import { localizedPath, useTranslations } from '../i18n/utils';
+import { newsPath, newsSegment } from '../i18n/news';
 
 interface Props {
   lang: Lang;
@@ -49,7 +50,8 @@ const section = path.split('/')[2] ?? '';
     <meta property="og:description" content={description} />
     <meta property="og:image" content={new URL('/images/t4f-logo.png', Astro.site)} />
     <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_GB'} />
-    <link rel="icon" href="/images/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/images/favicon.ico" sizes="32x32" media="(prefers-color-scheme: light)" />
+    <link rel="icon" href="/images/favicon-light.ico" sizes="32x32" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
     <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -61,7 +63,7 @@ const section = path.split('/')[2] ?? '';
           <Logo />
         </a>
         <nav class="nav">
-          <a href={localizedPath(lang, 'blog')} aria-current={section === 'blog' ? 'page' : undefined}>{t('nav.blog')}</a>
+          <a href={newsPath(lang)} aria-current={section === newsSegment[lang] ? 'page' : undefined}>{t('nav.news')}</a>
         </nav>
         <LanguagePicker lang={lang} alternates={alternates} />
       </div>

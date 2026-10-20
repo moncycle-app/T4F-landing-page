@@ -14,7 +14,7 @@ export function useTranslations(lang: Lang) {
   return (key: UiKey): string => ui[lang][key] ?? ui[defaultLang][key];
 }
 
-/** Builds a language-prefixed internal URL: localizedPath('en', 'blog') → /en/blog/ */
+/** Builds a language-prefixed internal URL: localizedPath('en', 'legal') → /en/legal/ */
 export function localizedPath(lang: Lang, path = ''): string {
   const clean = path.replace(/^\/+|\/+$/g, '');
   return clean ? `/${lang}/${clean}/` : `/${lang}/`;

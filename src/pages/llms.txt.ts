@@ -1,11 +1,11 @@
 import type { APIRoute } from 'astro';
-import { getPosts, postLang, postSlug } from '../i18n/blog';
+import { getPosts, newsPath, postLang, postSlug } from '../i18n/news';
 import { defaultLang, languages, langs, ui } from '../i18n/ui';
 import { localizedPath } from '../i18n/utils';
 
 /**
  * /llms.txt (https://llmstxt.org): Markdown overview of the site for LLMs and AI tools.
- * Generated at build time, so new blog posts are listed automatically.
+ * Generated at build time, so new news posts are listed automatically.
  */
 export const GET: APIRoute = async ({ site }) => {
   const url = (path: string) => new URL(path, site).href;
@@ -15,7 +15,7 @@ export const GET: APIRoute = async ({ site }) => {
 
   const pages = order.flatMap((lang) => [
     `- [${ui[lang]['nav.home']} (${languages[lang]})](${url(localizedPath(lang))}): ${ui[lang]['home.description']}`,
-    `- [${ui[lang]['blog.title']} (${languages[lang]})](${url(localizedPath(lang, 'blog'))}): ${ui[lang]['blog.description']}`,
+    `- [${ui[lang]['news.title']} (${languages[lang]})](${url(newsPath(lang))}): ${ui[lang]['news.description']}`,
     `- [${ui[lang]['legal.heading']} (${languages[lang]})](${url(localizedPath(lang, 'legal'))}): ${ui[lang]['legal.description']}`,
   ]);
 
@@ -23,10 +23,10 @@ export const GET: APIRoute = async ({ site }) => {
     const list = posts.filter((post) => postLang(post) === lang);
     if (!list.length) return [];
     return [
-      `## Blog posts (${languages[lang]})`,
+      `## News (${languages[lang]})`,
       '',
       ...list.map(
-        (post) => `- [${post.data.title}](${url(localizedPath(lang, `blog/${postSlug(post)}`))}): ${post.data.description}`,
+        (post) => `- [${post.data.title}](${url(newsPath(lang, postSlug(post)))}): ${post.data.description}`,
       ),
       '',
     ];

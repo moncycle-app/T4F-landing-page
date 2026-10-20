@@ -1,12 +1,12 @@
 ---
-title: Welcome to the Tech4Fertility blog
-description: The association’s first blog post, introducing what you will find here.
+title: Welcome to Tech4Fertility news
+description: The association’s first news post, introducing what you will find here.
 pubDate: 2026-10-20
 translationKey: welcome
 draft: false
 ---
 
-Tech4Fertility is a French non-profit association **putting technology to work for fertility**.
+Tech4Fertility is a French non-profit association **putting technology to work for natural family planning**.
 
 ## What you will find here
 

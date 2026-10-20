@@ -1,27 +1,27 @@
 ---
 import { render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getPosts, postLang, postSlug, type BlogPost } from '../../../i18n/blog';
-import { formatDate, localizedPath, useTranslations } from '../../../i18n/utils';
+import { getPosts, newsPath, newsSegment, postLang, postSlug, type NewsPost } from '../../../i18n/news';
+import { formatDate, useTranslations } from '../../../i18n/utils';
 import { langs, type Lang } from '../../../i18n/ui';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
   return posts.map((post) => {
     const lang = postLang(post);
-    // URL of each translation; falls back to the other language's post list
+    // URL of each translation; falls back to the other language's news list
     const alternates = Object.fromEntries(
       langs.map((code) => {
         const tr = posts.find((p) => postLang(p) === code && p.data.translationKey === post.data.translationKey);
-        return [code, tr ? localizedPath(code, `blog/${postSlug(tr)}`) : localizedPath(code, 'blog')];
+        return [code, newsPath(code, tr && postSlug(tr))];
       }),
     ) as Record<Lang, string>;
-    return { params: { lang, slug: postSlug(post) }, props: { post, alternates } };
+    return { params: { lang, news: newsSegment[lang], slug: postSlug(post) }, props: { post, alternates } };
   });
 }
 
 interface Props {
-  post: BlogPost;
+  post: NewsPost;
   alternates: Record<Lang, string>;
 }
 
@@ -34,13 +34,13 @@ const { title, description, pubDate, updatedDate } = post.data;
 
 <BaseLayout lang={lang} title={`${title} | Tech4Fertility`} description={description} alternates={alternates}>
   <article>
-    <a class="back" href={localizedPath(lang, 'blog')}>{t('blog.back')}</a>
+    <a class="back" href={newsPath(lang)}>{t('news.back')}</a>
     <h1 class="page-title">{title}</h1>
     <p class="lede">{description}</p>
     <p class="meta">
       <time datetime={pubDate.toISOString()}>{formatDate(pubDate, lang)}</time>
       {updatedDate && (
-        <> · {t('blog.updated')} <time datetime={updatedDate.toISOString()}>{formatDate(updatedDate, lang)}</time></>
+        <> · {t('news.updated')} <time datetime={updatedDate.toISOString()}>{formatDate(updatedDate, lang)}</time></>
       )}
     </p>
     <div class="prose">

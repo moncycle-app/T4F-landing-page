@@ -20,7 +20,8 @@ import { localizedPath } from '../i18n/utils';
     {langs.map((code) => (
       <link rel="alternate" hreflang={code} href={new URL(localizedPath(code), Astro.site)} />
     ))}
-    <link rel="icon" href="/images/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/images/favicon.ico" sizes="32x32" media="(prefers-color-scheme: light)" />
+    <link rel="icon" href="/images/favicon-light.ico" sizes="32x32" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
     <script is:inline>
       var langs = document.documentElement.getAttribute('data-langs').split(' '), fallback = document.documentElement.getAttribute('data-default');

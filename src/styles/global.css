@@ -9,6 +9,8 @@
   --accent: #e3b607;
   --accent-hover: #f0c61c;
   --on-accent: #1f1c14;
+  --logo-ink: #1f1c14;
+  --logo-four: #5e4802;
   --four: #e3b607;
   --bg: #fcfbf8;
   --text: #1f1c14;
@@ -18,6 +20,8 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --accent-hover: #f2cb2e;
+    --logo-ink: #ffffff;
+    --logo-four: #fbe8a3;
     --four: #e3b607;
     --bg: #15130d;
     --text: #f3efe2;
@@ -66,7 +70,8 @@ body {
 .home-link:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
 .logo { display: block; width: 44px; height: 44px; }
 .logo .bg { fill: var(--accent); }
-.logo .ink { fill: var(--on-accent); }
+.logo .ink { fill: var(--logo-ink); }
+.logo .ink-four { fill: var(--logo-four); }
 .nav { margin-right: auto; display: flex; gap: 1.25rem; font-weight: 600; }
 .nav a { color: var(--muted); text-decoration: none; }
 .nav a:hover, .nav a[aria-current] { color: var(--text); }
@@ -219,7 +224,7 @@ h2::before {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 
-/* Blog */
+/* News */
 .page-title {
   margin: 0 0 .5rem;
   font-size: clamp(2rem, 5vw, 3.25rem);

@@ -1,12 +1,12 @@
 ---
-title: Bienvenue sur le blog de Tech4Fertility
-description: Premier article du blog de l’association, pour présenter ce que vous y trouverez.
+title: Bienvenue dans les actualités de Tech4Fertility
+description: Première actualité de l’association, pour présenter ce que vous trouverez dans cette rubrique.
 pubDate: 2026-10-20
 translationKey: welcome
 draft: false
 ---
 
-Tech4Fertility est une association loi 1901 qui met **la technologie au service de la fertilité**.
+Tech4Fertility est une association loi 1901 qui met **la technologie au service des méthodes naturelles de régulation des naissances**.
 
 ## Ce que vous trouverez ici
 

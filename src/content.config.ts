@@ -3,12 +3,12 @@ import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 /**
- * Blog posts: src/content/blog/<lang>/<slug>.md
+ * News posts: src/content/news/<lang>/<slug>.md
  * An entry's id is "<lang>/<slug>".
  * Both translations of a post share the same `translationKey` value.
  */
-const blog = defineCollection({
-  loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
+const news = defineCollection({
+  loader: glob({ base: './src/content/news', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -19,4 +19,4 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+export const collections = { news };
