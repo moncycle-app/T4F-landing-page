@@ -1,0 +1,37 @@
+---
+import { languages, langs, type Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  /** Current page URL in each language */
+  alternates: Record<Lang, string>;
+}
+
+const { lang, alternates } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<nav class="lang" aria-label={t('nav.lang')}>
+  {langs.map((code) => (
+    <a
+      href={alternates[code]}
+      hreflang={code}
+      lang={code}
+      aria-label={languages[code]}
+      aria-current={code === lang ? 'true' : undefined}
+      data-lang={code}
+    >
+      {code.toUpperCase()}
+    </a>
+  ))}
+</nav>
+
+<script>
+  // Remember the chosen language: the root "/" uses it to redirect
+  document.querySelectorAll<HTMLAnchorElement>('.lang a[data-lang]').forEach((a) => {
+    a.addEventListener('click', () => {
+      try { localStorage.setItem('t4f-lang', a.dataset.lang ?? ''); } catch {}
+    });
+  });
+</script>

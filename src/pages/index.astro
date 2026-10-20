@@ -1,0 +1,52 @@
+---
+/**
+ * Root "/": redirects to /fr/ or /en/ based on the saved choice,
+ * otherwise the browser language, otherwise English.
+ * Without JavaScript, the meta refresh sends visitors to the default language.
+ */
+import '../styles/global.css';
+import { defaultLang, languages, langs } from '../i18n/ui';
+import { localizedPath } from '../i18n/utils';
+---
+
+<!doctype html>
+<html lang={defaultLang} data-langs={langs.join(" ")}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tech4Fertility</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href={new URL(localizedPath(defaultLang), Astro.site)} />
+    {langs.map((code) => (
+      <link rel="alternate" hreflang={code} href={new URL(localizedPath(code), Astro.site)} />
+    ))}
+    <link rel="icon" href="/images/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <script is:inline>
+      var langs = document.documentElement.getAttribute('data-langs').split(' '), fallback = 'en';
+      var lang;
+      try { lang = localStorage.getItem('t4f-lang'); } catch (e) {}
+      if (langs.indexOf(lang) < 0) {
+        var list = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ''];
+        lang = fallback;
+        for (var i = 0; i < list.length; i++) {
+          var code = String(list[i]).slice(0, 2).toLowerCase();
+          if (langs.indexOf(code) >= 0) { lang = code; break; }
+        }
+      }
+      location.replace('/' + lang + '/');
+    </script>
+    <noscript><meta http-equiv="refresh" content={`0; url=${localizedPath(defaultLang)}`} /></noscript>
+  </head>
+  <body>
+    <main class="center">
+      <div class="wrap">
+        <ul>
+          {langs.map((code) => (
+            <li><a href={localizedPath(code)} hreflang={code} lang={code}>{languages[code]}</a></li>
+          ))}
+        </ul>
+      </div>
+    </main>
+  </body>
+</html>

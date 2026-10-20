@@ -1,0 +1,27 @@
+# Astro build output
+dist/
+.astro/
+
+# Dependencies (installed in the Docker volume, never on the host)
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Local AI agent settings
+.claude/settings.local.json

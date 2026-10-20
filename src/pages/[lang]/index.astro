@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContactButton from '../../components/ContactButton.astro';
+import { langStaticPaths, useTranslations } from '../../i18n/utils';
+import type { Lang } from '../../i18n/ui';
+
+export const getStaticPaths = langStaticPaths;
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+---
+
+<BaseLayout lang={lang} title={t('home.title')} description={t('home.description')} mainClass="center">
+  <h1>
+    <span class="sr-only">Tech4Fertility</span>
+    <span class="word" aria-hidden="true">Tech<span class="for"><span><span>for</span></span></span><span class="four"><span>4</span></span>Fertility</span>
+  </h1>
+  <p class="tagline">{t('site.tagline')}</p>
+
+  <h2>{t('home.wip')}</h2>
+  <p class="message">{t('home.message')}</p>
+
+  <ContactButton user="hello" domain="tech4fertility.org" />
+</BaseLayout>

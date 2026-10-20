@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { defaultLang } from '../i18n/ui';
+import { localizedPath } from '../i18n/utils';
+---
+
+<BaseLayout lang={defaultLang} title="Page introuvable / Page not found | Tech4Fertility" description="Page introuvable / Page not found" alternates={{ fr: '/fr/', en: '/en/' }} mainClass="center">
+  <h1 class="page-title">404</h1>
+  <p class="lede" lang="fr">Cette page n’existe pas. <a href={localizedPath('fr')}>Retour à l’accueil</a></p>
+  <p class="lede" lang="en">This page does not exist. <a href={localizedPath('en')}>Back to the home page</a></p>
+</BaseLayout>

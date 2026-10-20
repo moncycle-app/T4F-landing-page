@@ -1,0 +1,30 @@
+---
+/**
+ * Anti-spam e-mail button: the address never appears as-is in the HTML,
+ * it is assembled client-side from its two halves.
+ * Without JavaScript, CSS displays it (readable, but absent from the page text).
+ */
+interface Props {
+  user: string;
+  domain: string;
+}
+const { user, domain } = Astro.props;
+---
+
+<a class="cta" data-mail>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+    <rect x="3" y="5" width="18" height="14" rx="2.5"/>
+    <path d="m4 7 8 6 8-6"/>
+  </svg>
+  <span data-u={user} data-d={domain}></span>
+</a>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('a[data-mail]').forEach((a) => {
+    const s = a.querySelector<HTMLElement>('[data-u]');
+    if (!s) return;
+    const addr = s.dataset.u + String.fromCharCode(64) + s.dataset.d;
+    a.href = 'mai' + 'lto:' + addr;
+    s.textContent = addr;
+  });
+</script>

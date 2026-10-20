@@ -1,0 +1,82 @@
+---
+import '../styles/global.css';
+import Logo from '../components/Logo.astro';
+import LanguagePicker from '../components/LanguagePicker.astro';
+import { langs, type Lang } from '../i18n/ui';
+import { localizedPath, useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** Page URL in each language. Default: same path with the language prefix swapped. */
+  alternates?: Partial<Record<Lang, string>>;
+  /** Class added to <main> */
+  mainClass?: string;
+}
+
+const { lang, title, description, alternates: custom = {}, mainClass } = Astro.props;
+const t = useTranslations(lang);
+
+const path = Astro.url.pathname;
+const alternates = Object.fromEntries(
+  langs.map((code) => [code, custom[code] ?? path.replace(new RegExp(`^/${lang}(?=/|$)`), `/${code}`)]),
+) as Record<Lang, string>;
+const canonical = new URL(path, Astro.site);
+const section = path.split('/')[2] ?? '';
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#fcfbf8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#15130d" media="(prefers-color-scheme: dark)" />
+    <link rel="canonical" href={canonical} />
+    {langs.map((code) => (
+      <link rel="alternate" hreflang={code} href={new URL(alternates[code], Astro.site)} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={new URL('/', Astro.site)} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Tech4Fertility" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL('/images/t4f-logo.png', Astro.site)} />
+    <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_GB'} />
+    <link rel="icon" href="/images/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap">
+        <a class="home-link" href={localizedPath(lang)} aria-label={`${t('site.title')} – ${t('nav.home')}`}>
+          <Logo />
+        </a>
+        <nav class="nav">
+          <a href={localizedPath(lang, 'blog')} aria-current={section === 'blog' ? 'page' : undefined}>{t('nav.blog')}</a>
+        </nav>
+        <LanguagePicker lang={lang} alternates={alternates} />
+      </div>
+    </header>
+
+    <main class={mainClass}>
+      <div class="wrap">
+        <slot />
+      </div>
+    </main>
+
+    <footer class="foot">
+      <div class="wrap">
+        <p>© {new Date().getFullYear()} Tech4Fertility</p>
+        <p>{t('footer.legal')}</p>
+      </div>
+    </footer>
+  </body>
+</html>
