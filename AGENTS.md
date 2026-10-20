@@ -8,25 +8,18 @@ Website of the **Tech4Fertility** association (https://tech4fertility.org), stat
 [Astro](https://astro.build) 7. Bilingual French / English: every page lives under a language prefix,
 `/fr/…` and `/en/…`. For now: an "under construction" home page and a blog.
 
-## Rule #1: everything runs through Docker
+## Commands
 
-Node and Astro are **not installed on the host machine** and must not be.
-Never run `npm`, `npx` or `node` directly: always go through Docker Compose.
+| Task                         | Command                                       |
+| ---------------------------- | --------------------------------------------- |
+| Dev server (live reload)     | `npm run dev` → http://localhost:4321/fr/     |
+| Production build (`./dist`)  | `npm run build`                               |
+| Preview the production build | `npm run preview`                             |
+| Type check only              | `npx astro check`                             |
 
-| Task                             | Command                                                    |
-| -------------------------------- | ---------------------------------------------------------- |
-| Dev server (live reload)         | `docker compose up dev` → http://localhost:4321/fr/        |
-| Production build (`./dist`)      | `docker compose run --rm build`                            |
-| Preview the production build     | `docker compose up preview` → http://localhost:4322/fr/    |
-| Type check only                  | `docker compose run --rm --no-deps dev npx astro check`    |
-| Add a dependency                 | `docker compose run --rm --no-deps dev npm install <pkg>`  |
-| Stop everything                  | `docker compose --profile tools down`                      |
-
-- `node_modules` lives in the `node_modules` Docker volume (Linux binaries). If dependencies look
-  broken: `docker compose --profile tools down -v`, then start again.
 - `npm run build` runs `astro check` then `astro build`: **a passing build means types are valid**.
   Run it before considering a task done.
-- `package-lock.json` is committed; only change it through `npm install` inside the container.
+- `package-lock.json` is committed; only change it through `npm install`.
 - `@astrojs/check` does not support TypeScript 7 yet: keep `typescript` on `^6`.
 
 ## Structure
@@ -44,7 +37,7 @@ src/
   i18n/blog.ts                Blog helpers: getPosts, postLang, postSlug
   layouts/BaseLayout.astro    <head> (SEO, hreflang), header, footer
   components/                 Logo, language picker, anti-spam e-mail button
-  pages/index.astro           Root "/": redirects to /fr/ or /en/ (saved choice > browser > en)
+  pages/index.astro           Root "/": redirects to /fr/ or /en/ (saved choice > browser > English)
   pages/[lang]/index.astro    Home page
   pages/[lang]/blog/          Post list and post page
   pages/404.astro             Bilingual error page
@@ -56,12 +49,14 @@ src/
 - CSS and the font are **inlined** into every HTML page (`build.inlineStylesheets: 'always'` and
   `vite.build.assetsInlineLimit` in `astro.config.mjs`), so styling never depends on an absolute URL.
 - Images are served from `/images/…` and internal links are absolute (`/fr/…`): the `dist` folder is
-  meant to be served by a web server at the domain root (use `docker compose up preview` locally).
+  meant to be served by a web server at the domain root (use `npm run preview` locally).
   Opening HTML files directly from disk shows the styled page, but images and navigation won't work.
 - Put every image in `public/images/` (sub-folders allowed) and reference it as `/images/…`.
 
 ## Internationalization
 
+- English is the default language (`defaultLang` in `src/i18n/ui.ts`, `i18n.defaultLocale` in
+  `astro.config.mjs`): used by the root redirect fallback, with or without JavaScript.
 - Languages are declared in `src/i18n/ui.ts` (`languages`) **and** in `astro.config.mjs` (`i18n.locales`):
   keep both in sync.
 - No hard-coded UI text in components: add a key to `ui.fr` **and** `ui.en`, then use `t('my.key')`.

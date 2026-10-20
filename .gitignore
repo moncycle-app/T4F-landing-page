@@ -25,3 +25,8 @@ Thumbs.db
 
 # Local AI agent settings
 .claude/settings.local.json
+
+# Local dev environment (see CLAUDE.md)
+CLAUDE.md
+docker-compose.yml
+.dockerignore

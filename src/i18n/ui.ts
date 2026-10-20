@@ -6,7 +6,7 @@ export const languages = {
 
 export type Lang = keyof typeof languages;
 export const langs = Object.keys(languages) as Lang[];
-export const defaultLang: Lang = 'fr';
+export const defaultLang: Lang = 'en';
 
 /** UI strings. Every key must exist in both languages. */
 export const ui = {

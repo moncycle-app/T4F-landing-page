@@ -18,7 +18,7 @@ export default defineConfig({
   },
   i18n: {
     locales: ['fr', 'en'],
-    defaultLocale: 'fr',
+    defaultLocale: 'en',
     routing: {
       // Every page is prefixed: /fr/… and /en/…
       prefixDefaultLocale: true,

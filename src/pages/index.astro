@@ -10,7 +10,7 @@ import { localizedPath } from '../i18n/utils';
 ---
 
 <!doctype html>
-<html lang={defaultLang} data-langs={langs.join(" ")}>
+<html lang={defaultLang} data-langs={langs.join(" ")} data-default={defaultLang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -23,7 +23,7 @@ import { localizedPath } from '../i18n/utils';
     <link rel="icon" href="/images/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
     <script is:inline>
-      var langs = document.documentElement.getAttribute('data-langs').split(' '), fallback = 'en';
+      var langs = document.documentElement.getAttribute('data-langs').split(' '), fallback = document.documentElement.getAttribute('data-default');
       var lang;
       try { lang = localStorage.getItem('t4f-lang'); } catch (e) {}
       if (langs.indexOf(lang) < 0) {
