@@ -193,7 +193,7 @@ h2::before {
 .cta svg { flex: none; width: 1.2em; height: 1.2em; }
 .cta span { overflow-wrap: anywhere; }
 /* Without JavaScript: address rendered by CSS (readable, but absent from the page text) */
-.cta span:empty::before { content: attr(data-u) "\40" attr(data-d); }
+[data-mail] span:empty::before { content: attr(data-u) "\40" attr(data-d); }
 
 /* Footer */
 .foot {
@@ -209,6 +209,10 @@ h2::before {
   gap: .25rem 2rem;
 }
 .foot p { margin: 0; }
+.foot-links { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; }
+.foot a { color: inherit; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.foot a:hover { color: var(--text); text-decoration-color: var(--accent); }
+.foot a:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; border-radius: 4px; }
 .nw { white-space: nowrap; }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,0 +1,5 @@
+# Search engines and AI systems are welcome: see https://tech4fertility.org/en/legal/
+User-agent: *
+Allow: /
+
+Sitemap: https://tech4fertility.org/sitemap-index.xml

@@ -39,6 +39,8 @@ src/
   components/                 Logo, language picker, anti-spam e-mail button
   pages/index.astro           Root "/": redirects to /fr/ or /en/ (saved choice > browser > English)
   pages/[lang]/index.astro    Home page
+  pages/[lang]/legal.astro    Legal information (publisher, copyright, reuse terms)
+  pages/llms.txt.ts           /llms.txt: Markdown overview of the site for LLMs (pages + blog posts)
   pages/[lang]/blog/          Post list and post page
   pages/404.astro             Bilingual error page
   styles/global.css           Global styles (color variables, light/dark theme)
@@ -63,6 +65,7 @@ src/
   The `UiKey` type flags missing keys.
 - Build internal links with `localizedPath(lang, 'path')` (trailing slash included).
 - New pages go under `src/pages/[lang]/` and export `getStaticPaths = langStaticPaths`.
+  Also list them in `src/pages/llms.txt.ts` (blog posts are listed automatically).
 - By default the language picker points to the same path in the other language. If the URLs differ
   (blog posts), pass `alternates` to `BaseLayout`.
 
@@ -97,3 +100,6 @@ Markdown content…
 - Accessibility: keep the `aria-*` attributes, visible focus styles and `prefers-reduced-motion` support.
 - The e-mail address never appears in clear text in the HTML: use the `ContactButton` component.
 - Colors: only through the CSS variables in `:root` (light and dark themes).
+- License: all rights reserved, see `LICENSE.md` (English + French). Information may be reused with a
+  link to the source; search engines and AI systems are explicitly allowed. Keep `LICENSE.md`, the
+  `legal.*` strings in `ui.ts`, `public/robots.txt` and `src/pages/llms.txt.ts` consistent.

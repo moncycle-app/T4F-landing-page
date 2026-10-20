@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContactButton from '../../components/ContactButton.astro';
+import { langStaticPaths, useTranslations } from '../../i18n/utils';
+import type { Lang } from '../../i18n/ui';
+
+export const getStaticPaths = langStaticPaths;
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+---
+
+<BaseLayout lang={lang} title={t('legal.title')} description={t('legal.description')}>
+  <h1 class="page-title">{t('legal.heading')}</h1>
+  <div class="prose">
+    <h2>{t('legal.publisher.title')}</h2>
+    <p>{t('legal.publisher.text')} <ContactButton user="hello" domain="tech4fertility.org" variant="link" /></p>
+
+    <h2>{t('legal.copyright.title')}</h2>
+    <p>{t('legal.copyright.text')}</p>
+
+    <h2>{t('legal.reuse.title')}</h2>
+    <p>{t('legal.reuse.text')}</p>
+
+    <h2>{t('legal.ai.title')}</h2>
+    <p>{t('legal.ai.text')}</p>
+  </div>
+</BaseLayout>

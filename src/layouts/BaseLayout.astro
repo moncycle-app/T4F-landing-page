@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Logo from '../components/Logo.astro';
 import LanguagePicker from '../components/LanguagePicker.astro';
+import ContactButton from '../components/ContactButton.astro';
 import { langs, type Lang } from '../i18n/ui';
 import { localizedPath, useTranslations } from '../i18n/utils';
 
@@ -74,8 +75,14 @@ const section = path.split('/')[2] ?? '';
 
     <footer class="foot">
       <div class="wrap">
-        <p>© {new Date().getFullYear()} Tech4Fertility</p>
-        <p>{t('footer.legal')}</p>
+        <div>
+          <p>© {new Date().getFullYear()} Tech4Fertility. {t('footer.rights')} {t('footer.reuse')}</p>
+          <p>{t('footer.legal')}</p>
+        </div>
+        <p class="foot-links">
+          <ContactButton user="hello" domain="tech4fertility.org" variant="link" />
+          <a href={localizedPath(lang, 'legal')} aria-current={section === 'legal' ? 'page' : undefined}>{t('footer.legalLink')}</a>
+        </p>
       </div>
     </footer>
   </body>
