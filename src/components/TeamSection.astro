@@ -1,0 +1,112 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { sectionIds, type Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  index: number;
+  total: number;
+}
+const { lang, index, total } = Astro.props;
+const t = useTranslations(lang);
+
+type Localized = Record<Lang, string>;
+type Network = keyof typeof networks;
+
+interface Member {
+  firstName: string;
+  lastName: string;
+  role: Localized;
+  job?: Localized;
+  /** Optional photo in public/images/ (e.g. /images/team/jean.jpg); initials are shown otherwise */
+  photo?: string;
+  links: { network: Network; url: string; handle?: string }[];
+  /** Placeholder entry, not displayed until filled in */
+  todo?: boolean;
+}
+
+/** Social networks: display name and icon (24×24, stroke) */
+const networks = {
+  signal: {
+    name: 'Signal',
+    icon: '<circle cx="12" cy="12" r="8.5" stroke-dasharray="3 1.6"/><path d="M8.5 15.5 7.5 18l2.7-.9"/><circle cx="12" cy="12" r="5"/>',
+  },
+  linkedin: {
+    name: 'LinkedIn',
+    icon: '<rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M8 10.5V16M8 7.8v.1M11.5 16v-5.5M11.5 13c0-1.7 1-2.6 2.3-2.6s2.2.9 2.2 2.6v3"/>',
+  },
+  github: {
+    name: 'GitHub',
+    icon: '<path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12 12 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/>',
+  },
+};
+
+const members: Member[] = [
+  {
+    firstName: 'Jean',
+    lastName: 'Mercadier',
+    role: { fr: 'Président', en: 'President' },
+    job: { fr: 'Développeur back-end, API et web app', en: 'Back-end, API and web app developer' },
+    links: [
+      {
+        network: 'signal',
+        handle: '@jean.11',
+        url: 'https://signal.me/#eu/NZ99WMZSpp6NHkUBUhdKvADr4todXR+V8E20xbHQmtvZHRUK6cBOmIXE0PVQddrc',
+      },
+      { network: 'linkedin', url: 'https://www.linkedin.com/in/m-jean/' },
+    ],
+  },
+  // TODO: member 2 (first name, last name, role, social links), then remove `todo: true`
+  { firstName: 'TODO', lastName: 'TODO', role: { fr: 'TODO', en: 'TODO' }, links: [], todo: true },
+  // TODO: member 3 (first name, last name, role, social links), then remove `todo: true`
+  { firstName: 'TODO', lastName: 'TODO', role: { fr: 'TODO', en: 'TODO' }, links: [], todo: true },
+  // TODO: member 4 (first name, last name, role, social links), then remove `todo: true`
+  { firstName: 'TODO', lastName: 'TODO', role: { fr: 'TODO', en: 'TODO' }, links: [], todo: true },
+];
+
+const visible = members.filter((m) => !m.todo);
+---
+
+<section class="section section-team" id={sectionIds[lang].team} aria-labelledby="team-title">
+  <div class="wrap">
+    <SectionHeading index={index} total={total} id="team-title" title={t('team.title')} lead={t('team.lead')} />
+
+    <ul class="team">
+      {visible.map((m) => {
+        const name = `${m.firstName} ${m.lastName}`;
+        return (
+          <li class="member">
+            <div class="avatar" aria-hidden="true">
+              {m.photo ? <img src={m.photo} alt="" width="88" height="88" loading="lazy" /> : <span>{m.firstName[0]}{m.lastName[0]}</span>}
+            </div>
+            <h3>{name}</h3>
+            <p class="member-role">{m.role[lang]}</p>
+            {m.job && <p class="member-job">{m.job[lang]}</p>}
+            {m.links.length > 0 && (
+              <ul class="socials" aria-label={`${t('team.links')} – ${name}`}>
+                {m.links.map((l) => {
+                  const network = networks[l.network];
+                  return (
+                    <li>
+                      <a
+                        href={l.url}
+                        target="_blank"
+                        rel="noopener"
+                        aria-label={`${network.name}${l.handle ? ` ${l.handle}` : ''} – ${name} ${t('a11y.newTab')}`}
+                        title={l.handle ? `${network.name} ${l.handle}` : network.name}
+                      >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" set:html={network.icon} />
+                        {l.handle && <span class="handle">{l.handle}</span>}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</section>

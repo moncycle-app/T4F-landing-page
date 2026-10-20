@@ -1,0 +1,48 @@
+---
+/**
+ * Decorative "cycle" motif: 28 days around a ring, four phase arcs inside.
+ * Purely visual (aria-hidden); colors come from the CSS variables.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+
+const days = 28;
+const dots = Array.from({ length: days }, (_, i) => {
+  const angle = (i / days) * Math.PI * 2 - Math.PI / 2;
+  return {
+    x: +(Math.cos(angle) * 80).toFixed(2),
+    y: +(Math.sin(angle) * 80).toFixed(2),
+    // A few highlighted days, as on a cycle chart
+    lit: i >= 11 && i <= 16,
+    first: i === 0,
+  };
+});
+
+// Four phase arcs on an inner ring, separated by small gaps
+const r = 60;
+const gap = 0.09;
+const point = (a: number) => `${(Math.cos(a) * r).toFixed(2)} ${(Math.sin(a) * r).toFixed(2)}`;
+const arcs = [0, 1, 2, 3].map((q) => {
+  const start = (q / 4) * Math.PI * 2 - Math.PI / 2 + gap;
+  const end = ((q + 1) / 4) * Math.PI * 2 - Math.PI / 2 - gap;
+  return `M ${point(start)} A ${r} ${r} 0 0 1 ${point(end)}`;
+});
+---
+
+<svg class:list={['cycle', className]} viewBox="-100 -100 200 200" aria-hidden="true" focusable="false">
+  <circle class="cycle-orbit" r="92" />
+  <g class="cycle-days">
+    {dots.map((d) => (
+      <circle
+        class:list={['cycle-day', { lit: d.lit, first: d.first }]}
+        cx={d.x}
+        cy={d.y}
+        r={d.lit ? 4.6 : d.first ? 5 : 3}
+      />
+    ))}
+  </g>
+  {arcs.map((d, i) => <path class={`cycle-phase cycle-phase-${i + 1}`} d={d} />)}
+  <circle class="cycle-core" r="34" />
+</svg>

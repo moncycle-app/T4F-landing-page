@@ -1,4 +1,4 @@
-import { defaultLang, langs, ui, type Lang, type UiKey } from './ui';
+import { defaultLang, langs, sectionIds, ui, type Lang, type SectionKey, type UiKey } from './ui';
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === 'string' && (langs as string[]).includes(value);
@@ -20,11 +20,18 @@ export function localizedPath(lang: Lang, path = ''): string {
   return clean ? `/${lang}/${clean}/` : `/${lang}/`;
 }
 
+/** Link to a home page section, usable from any page: sectionPath('fr', 'projects') → /fr/#projets */
+export function sectionPath(lang: Lang, section: SectionKey): string {
+  return `${localizedPath(lang)}#${sectionIds[lang][section]}`;
+}
+
 export function formatDate(date: Date, lang: Lang): string {
   return date.toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-GB', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    // Dates come from YYYY-MM-DD strings (UTC midnight): never shift them by a day
+    timeZone: 'UTC',
   });
 }
 

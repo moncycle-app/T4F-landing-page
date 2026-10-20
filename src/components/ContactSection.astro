@@ -1,0 +1,36 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import ContactButton from './ContactButton.astro';
+import { sectionIds, type Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  index: number;
+  total: number;
+}
+const { lang, index, total } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="section section-contact" id={sectionIds[lang].contact} aria-labelledby="contact-title">
+  <div class="wrap">
+    <SectionHeading index={index} total={total} id="contact-title" title={t('contact.title')} lead={t('contact.lead')} />
+
+    <div class="contact-grid">
+      <div class="contact-card">
+        <h3>{t('contact.email')}</h3>
+        <ContactButton />
+      </div>
+      <div class="contact-card">
+        <h3>{t('contact.address')}</h3>
+        <address>
+          Tech 4 Fertility<br />
+          15A rue Valentin Gaumont<br />
+          27200 Vernon<br />
+          France
+        </address>
+      </div>
+    </div>
+  </div>
+</section>

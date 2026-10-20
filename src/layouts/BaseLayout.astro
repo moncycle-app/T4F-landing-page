@@ -3,8 +3,8 @@ import '../styles/global.css';
 import Logo from '../components/Logo.astro';
 import LanguagePicker from '../components/LanguagePicker.astro';
 import ContactButton from '../components/ContactButton.astro';
-import { langs, type Lang } from '../i18n/ui';
-import { localizedPath, useTranslations } from '../i18n/utils';
+import { langs, links, sectionKeys, type Lang, type UiKey } from '../i18n/ui';
+import { localizedPath, sectionPath, useTranslations } from '../i18n/utils';
 import { newsPath, newsSegment } from '../i18n/news';
 
 interface Props {
@@ -26,6 +26,13 @@ const alternates = Object.fromEntries(
 ) as Record<Lang, string>;
 const canonical = new URL(path, Astro.site);
 const section = path.split('/')[2] ?? '';
+
+// Home page sections, linked from the header and the footer
+const sectionLinks = sectionKeys.map((key) => ({
+  key,
+  href: sectionPath(lang, key),
+  label: t(`nav.${key}` as UiKey),
+}));
 ---
 
 <!doctype html>
@@ -36,7 +43,7 @@ const section = path.split('/')[2] ?? '';
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#fcfbf8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#fbf8f1" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#15130d" media="(prefers-color-scheme: dark)" />
     <link rel="canonical" href={canonical} />
     {langs.map((code) => (
@@ -45,7 +52,7 @@ const section = path.split('/')[2] ?? '';
     <link rel="alternate" hreflang="x-default" href={new URL('/', Astro.site)} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
-    <meta property="og:site_name" content="Tech4Fertility" />
+    <meta property="og:site_name" content={t('site.title')} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={new URL('/images/t4f-logo.png', Astro.site)} />
@@ -62,7 +69,10 @@ const section = path.split('/')[2] ?? '';
         <a class="home-link" href={localizedPath(lang)} aria-label={`${t('site.title')} – ${t('nav.home')}`}>
           <Logo />
         </a>
-        <nav class="nav">
+        <nav class="nav" aria-label={t('nav.main')}>
+          {sectionLinks.map((link) => (
+            <a href={link.href} class:list={{ 'nav-donate': link.key === 'donate' }}>{link.label}</a>
+          ))}
           <a href={newsPath(lang)} aria-current={section === newsSegment[lang] ? 'page' : undefined}>{t('nav.news')}</a>
         </nav>
         <LanguagePicker lang={lang} alternates={alternates} />
@@ -77,12 +87,45 @@ const section = path.split('/')[2] ?? '';
 
     <footer class="foot">
       <div class="wrap">
-        <div>
-          <p>© {new Date().getFullYear()} Tech4Fertility. {t('footer.rights')} {t('footer.reuse')}</p>
-          <p>{t('footer.legal')}</p>
+        <div class="foot-grid">
+          <div class="foot-brand">
+            <p class="foot-name"><Logo /> {t('site.title')}</p>
+            <p>{t('site.tagline')}</p>
+            <p class="foot-badge">{t('site.badge')}</p>
+          </div>
+
+          <nav class="foot-col" aria-labelledby="foot-nav-title">
+            <h2 id="foot-nav-title">{t('footer.nav')}</h2>
+            <ul>
+              {sectionLinks.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+              <li><a href={newsPath(lang)}>{t('nav.news')}</a></li>
+            </ul>
+          </nav>
+
+          <div class="foot-col">
+            <h2>{t('footer.projects')}</h2>
+            <ul>
+              <li><a href={links.moncycle} target="_blank" rel="noopener">moncycle.app<span class="sr-only"> {t('a11y.newTab')}</span></a></li>
+            </ul>
+            <h2>{t('footer.support')}</h2>
+            <a class="foot-donate" href={links.helloAsso} target="_blank" rel="noopener">
+              {t('nav.donate')}<span class="sr-only"> {t('a11y.newTab')}</span>
+            </a>
+          </div>
+
+          <div class="foot-col">
+            <h2>{t('footer.contact')}</h2>
+            <ul>
+              <li><ContactButton variant="link" /></li>
+              <li>15A rue Valentin Gaumont,<br />27200 Vernon</li>
+            </ul>
+          </div>
         </div>
-        <p class="foot-links">
-          <ContactButton user="hello" domain="tech4fertility.org" variant="link" />
+
+        <p class="foot-legal">
+          <span>© {new Date().getFullYear()} {t('site.title')}</span>
+          <span>{t('footer.status')}</span>
+          <span>RNA W271007328</span>
           <a href={localizedPath(lang, 'legal')} aria-current={section === 'legal' ? 'page' : undefined}>{t('footer.legalLink')}</a>
         </p>
       </div>

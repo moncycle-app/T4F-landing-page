@@ -1,0 +1,32 @@
+---
+/**
+ * Heading of a home page section: number, small progress ring (the cycle motif), title and lead.
+ */
+interface Props {
+  /** Position of the section (1-based) */
+  index: number;
+  /** Number of sections */
+  total: number;
+  title: string;
+  lead?: string;
+  /** id of the <h2>, referenced by the section's aria-labelledby */
+  id: string;
+}
+const { index, total, title, lead, id } = Astro.props;
+
+// Ring filled up to the section's position: 1/5, 2/5…
+const circumference = 2 * Math.PI * 9;
+const filled = (index / total) * circumference;
+---
+
+<header class="section-head">
+  <p class="section-num" aria-hidden="true">
+    <svg viewBox="0 0 24 24" focusable="false">
+      <circle class="track" cx="12" cy="12" r="9" />
+      <circle class="fill" cx="12" cy="12" r="9" stroke-dasharray={`${filled.toFixed(2)} ${circumference.toFixed(2)}`} />
+    </svg>
+    {String(index).padStart(2, '0')}
+  </p>
+  <h2 id={id}>{title}</h2>
+  {lead && <p class="section-lead">{lead}</p>}
+</header>

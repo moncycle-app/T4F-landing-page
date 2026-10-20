@@ -4,7 +4,7 @@ Guide for AI agents (and humans) working on this repository.
 
 ## Project
 
-Website of the **Tech4Fertility** association (https://tech4fertility.org), statically generated with
+Website of the **Tech 4 Fertility** association (https://tech4fertility.org), statically generated with
 [Astro](https://astro.build) 7. Bilingual French / English: every page lives under a language prefix,
 `/fr/…` and `/en/…`. For now: an "under construction" home page and a news section
 ("News" in English, "Actualités" in French).
@@ -35,14 +35,15 @@ src/
   content.config.ts           "news" collection schema
   content/news/fr/*.md        French news posts
   content/news/en/*.md        English news posts
-  i18n/ui.ts                  Languages + every UI string (fr/en)
+  i18n/ui.ts                  Languages, UI strings (fr/en), home section anchors, shared external links
   i18n/utils.ts               Helpers: useTranslations, localizedPath, formatDate…
   i18n/news.ts                News helpers: newsSegment, newsPath, getPosts, postLang, postSlug
   layouts/BaseLayout.astro    <head> (SEO, hreflang), header, footer
-  components/                 Logo, language picker, anti-spam e-mail button
+  components/                 Logo, language picker, anti-spam e-mail button, home page sections
+                              (*Section.astro: projects and team members are data arrays inside)
   pages/index.astro           Root "/": redirects to /fr/ or /en/ (saved choice > browser > English)
-  pages/[lang]/index.astro    Home page
-  pages/[lang]/legal.astro    Legal information (publisher, copyright, reuse terms)
+  pages/[lang]/index.astro    Home page: hero + association, projects, team, donate, contact sections
+  pages/[lang]/legal.astro    Legal notice (mentions légales); renders the page language's half of LICENSE.md
   pages/llms.txt.ts           /llms.txt: Markdown overview of the site for LLMs (pages + news posts)
   pages/[lang]/[news]/        News list and post page (/en/news/…, /fr/actualites/…)
   pages/404.astro             Bilingual error page
@@ -67,6 +68,8 @@ src/
 - No hard-coded UI text in components: add a key to `ui.fr` **and** `ui.en`, then use `t('my.key')`.
   The `UiKey` type flags missing keys.
 - Build internal links with `localizedPath(lang, 'path')` (trailing slash included).
+- Home section anchors are translated (`sectionIds` in `src/i18n/ui.ts`, e.g. `/fr/#projets`, `/en/#projects`):
+  link to them with `sectionPath(lang, 'projects')`.
 - New pages go under `src/pages/[lang]/` and export `getStaticPaths = langStaticPaths`.
   Also list them in `src/pages/llms.txt.ts` (news posts are listed automatically).
 - By default the language picker points to the same path in the other language. If the URLs differ
@@ -107,8 +110,10 @@ Markdown content…
   French only appears as site content (French UI strings in `ui.ts`, posts in `content/news/fr/`).
 - 100% static site (`output: "static"`), no server adapter.
 - Accessibility: keep the `aria-*` attributes, visible focus styles and `prefers-reduced-motion` support.
-- The e-mail address never appears in clear text in the HTML: use the `ContactButton` component.
+- The e-mail address never appears in clear text in the HTML: use the `ContactButton` component
+  (defaults to the association address; pass `user`/`domain` for another one).
 - Colors: only through the CSS variables in `:root` (light and dark themes).
 - License: all rights reserved, see `LICENSE.md` (English + French). Information may be reused with a
   link to the source; search engines and AI systems are explicitly allowed. Keep `LICENSE.md`, the
-  `legal.*` strings in `ui.ts`, `public/robots.txt` and `src/pages/llms.txt.ts` consistent.
+  legal page, `public/robots.txt` and `src/pages/llms.txt.ts` consistent. The legal page renders `LICENSE.md`
+  directly and expects its `## English` and `## Français` headings.

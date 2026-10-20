@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getPosts, newsPath, postLang, postSlug } from '../i18n/news';
-import { defaultLang, languages, langs, ui } from '../i18n/ui';
+import { defaultLang, languages, langs, links, ui } from '../i18n/ui';
 import { localizedPath } from '../i18n/utils';
 
 /**
@@ -33,16 +33,20 @@ export const GET: APIRoute = async ({ site }) => {
   });
 
   const body = [
-    '# Tech4Fertility',
+    '# Tech 4 Fertility',
     '',
-    `> ${ui.en['site.tagline']}. Tech4Fertility is a French non-profit association (loi 1901). This website is bilingual: every page exists in English (/en/) and French (/fr/).`,
+    `> ${ui.en['site.tagline']} Tech 4 Fertility is a French non-profit association (loi 1901). This website is bilingual: every page exists in English (/en/) and French (/fr/).`,
     '',
     'Search engines and AI systems are welcome: indexing, caching, text and data mining and AI training are explicitly permitted.',
-    'When reusing information from this site, please credit Tech4Fertility with a link to the original page.',
+    'When reusing information from this site, please credit Tech 4 Fertility with a link to the original page.',
     '',
     '## Pages',
     '',
     ...pages,
+    '',
+    '## Projects',
+    '',
+    `- [moncycle.app](${links.moncycle}): free, ad-free, open-source web app for tracking the menstrual cycle with natural family planning methods (Billings, FertilityCare, temperature). Source code: ${links.moncycleSource}`,
     '',
     ...postSections,
   ].join('\n');

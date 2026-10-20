@@ -1,0 +1,169 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import CycleMotif from './CycleMotif.astro';
+import { links, sectionIds, type Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  index: number;
+  total: number;
+}
+const { lang, index, total } = Astro.props;
+const t = useTranslations(lang);
+
+type Localized<T = string> = Record<Lang, T>;
+
+interface Project {
+  name: string;
+  url: string;
+  sourceUrl?: string;
+  status: 'live';
+  /** Shown as a wide card */
+  featured?: boolean;
+  baseline: Localized;
+  description: Localized;
+  points: Localized<string[]>;
+  quote?: Localized;
+  figures?: { value: number; label: Localized }[];
+  /** Where the figures come from */
+  figuresNote?: Localized;
+}
+
+/**
+ * Projects of the association. This section only presents each project
+ * and sends visitors to its own website.
+ */
+const projects: Project[] = [
+  {
+    name: 'moncycle.app',
+    url: links.moncycle,
+    sourceUrl: links.moncycleSource,
+    status: 'live',
+    featured: true,
+    baseline: {
+      fr: 'Rendre facile le suivi des cycles menstruels et l’utilisation des méthodes naturelles.',
+      en: 'Making menstrual cycle tracking and natural methods easy to use.',
+    },
+    description: {
+      fr: 'Application web de suivi du cycle menstruel pour les méthodes naturelles de régulation des naissances : Billings, FertilityCare et suivi de la température.',
+      en: 'A web app for tracking the menstrual cycle with natural family planning methods: Billings, FertilityCare and temperature tracking.',
+    },
+    points: {
+      fr: [
+        '100 % compatible Billings et FertilityCare',
+        'Glaire cervicale et température',
+        'Gratuite, sans publicité, sans vente de données',
+        'Hébergée et développée en France',
+        'Open source (CC BY-NC-SA)',
+        'Sans IA ni prédiction',
+      ],
+      en: [
+        '100% compatible with Billings and FertilityCare',
+        'Cervical mucus and temperature',
+        'Free, no ads, no data sales',
+        'Hosted and developed in France',
+        'Open source (CC BY-NC-SA)',
+        'No AI, no predictions',
+      ],
+    },
+    quote: {
+      fr: 'Vous restez le cerveau derrière votre tableau.',
+      en: 'You remain the brain behind your chart.',
+    },
+    figures: [
+      { value: 1900, label: { fr: 'femmes et couples', en: 'women and couples' } },
+      { value: 12000, label: { fr: 'cycles enregistrés', en: 'cycles recorded' } },
+      { value: 260000, label: { fr: 'observations journalières', en: 'daily observations' } },
+    ],
+    figuresNote: {
+      fr: 'Chiffres affichés sur moncycle.app, octobre 2026',
+      en: 'Figures shown on moncycle.app, October 2026',
+    },
+  },
+];
+
+const number = new Intl.NumberFormat(lang === 'fr' ? 'fr-FR' : 'en-GB');
+const statusLabel = { live: t('projects.status.live') };
+const quote = (text: string) => (lang === 'fr' ? `«\u00a0${text}\u00a0»` : `“${text}”`);
+---
+
+<section class="section section-projects" id={sectionIds[lang].projects} aria-labelledby="projects-title">
+  <div class="wrap">
+    <SectionHeading index={index} total={total} id="projects-title" title={t('projects.title')} lead={t('projects.lead')} />
+
+    <ul class="projects">
+      {projects.map((p) => (
+        <li class:list={['project', { featured: p.featured }]}>
+          <div class="project-body">
+            <div class="project-top">
+              <h3 class="project-name">{p.name}</h3>
+              <span class="status"><span class="status-dot" aria-hidden="true"></span>{statusLabel[p.status]}</span>
+            </div>
+            <p class="project-baseline">{p.baseline[lang]}</p>
+            <p class="project-desc">{p.description[lang]}</p>
+
+            <h4 class="sr-only">{t('projects.keyPoints')}</h4>
+            <ul class="tags">
+              {p.points[lang].map((point) => <li>{point}</li>)}
+            </ul>
+
+            {p.quote && (
+              <figure class="project-quote">
+                <blockquote><p>{quote(p.quote[lang])}</p></blockquote>
+                <figcaption>{p.name}</figcaption>
+              </figure>
+            )}
+
+            {p.figures && (
+              <figure class="figures">
+                <dl>
+                  {p.figures.map((f) => (
+                    <div>
+                      <dt>{f.label[lang]}</dt>
+                      <dd>{number.format(f.value)}</dd>
+                    </div>
+                  ))}
+                </dl>
+                {p.figuresNote && <figcaption>{p.figuresNote[lang]}</figcaption>}
+              </figure>
+            )}
+
+            <p class="project-links">
+              <a class="btn btn-primary" href={p.url} target="_blank" rel="noopener">
+                {t('projects.visit')} {p.name}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                <span class="sr-only">{t('a11y.newTab')}</span>
+              </a>
+              {p.sourceUrl && (
+                <a class="text-link" href={p.sourceUrl} target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/></svg>
+                  {t('projects.source')}
+                  <span class="sr-only">{t('a11y.newTab')}</span>
+                </a>
+              )}
+            </p>
+          </div>
+
+          {p.featured && (
+            <div class="project-visual" aria-hidden="true">
+              <div class="phone">
+                <div class="phone-notch"></div>
+                <CycleMotif class="phone-cycle" />
+                <div class="phone-rows">
+                  {Array.from({ length: 4 }, (_, row) => (
+                    <div class="phone-row">
+                      {Array.from({ length: 7 }, (_, col) => (
+                        <span class:list={['stamp', `stamp-${(row * 7 + col * 3 + row) % 4}`]}></span>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

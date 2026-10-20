@@ -1,28 +1,96 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ContactButton from '../../components/ContactButton.astro';
-import { langStaticPaths, useTranslations } from '../../i18n/utils';
+import { compiledContent as licenseHtml } from '../../../LICENSE.md';
+import { formatDate, langStaticPaths, useTranslations } from '../../i18n/utils';
 import type { Lang } from '../../i18n/ui';
 
 export const getStaticPaths = langStaticPaths;
 
 const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
+
+/** Publisher details. Rows with an empty value are not displayed. */
+const publisher = [
+  { label: t('legal.publisher.seat'), value: '15A rue Valentin Gaumont, 27200 Vernon, France' },
+  { label: t('legal.publisher.rna'), value: 'W271007328' },
+  { label: t('legal.publisher.founded'), value: formatDate(new Date('2026-07-13'), lang) },
+  { label: t('legal.publisher.declared'), value: formatDate(new Date('2026-07-27'), lang) },
+  { label: t('legal.publisher.joafe'), value: formatDate(new Date('2026-08-11'), lang) },
+  { label: t('legal.publisher.president'), value: 'Jean Mercadier' },
+].filter((row) => row.value);
+
+/**
+ * LICENSE.md (repository root) is the single source of the licence terms.
+ * It holds one "## English" and one "## Français" section: show the one matching the page language.
+ */
+const licenseSection = { fr: 'Français', en: 'English' }[lang];
+const license = (await licenseHtml())
+  .split(/<h2[^>]*>/)
+  .slice(1)
+  .map((part) => part.split('</h2>'))
+  .find(([heading]) => heading.trim() === licenseSection)?.[1];
+if (!license) throw new Error(`LICENSE.md has no "## ${licenseSection}" section.`);
+
+const note = t('legal.translationNote');
 ---
 
 <BaseLayout lang={lang} title={t('legal.title')} description={t('legal.description')}>
   <h1 class="page-title">{t('legal.heading')}</h1>
-  <div class="prose">
+  {note && <p class="lede">{note}</p>}
+
+  <div class="prose legal">
     <h2>{t('legal.publisher.title')}</h2>
-    <p>{t('legal.publisher.text')} <ContactButton user="hello" domain="tech4fertility.org" variant="link" /></p>
+    <p>{t('legal.publisher.text')}</p>
+    <dl class="legal-list">
+      {publisher.map((row) => (
+        <div>
+          <dt>{row.label}</dt>
+          <dd>{row.value}</dd>
+        </div>
+      ))}
+      <div>
+        <dt>{t('legal.publisher.contact')}</dt>
+        <dd><ContactButton variant="link" /></dd>
+      </div>
+    </dl>
 
-    <h2>{t('legal.copyright.title')}</h2>
-    <p>{t('legal.copyright.text')}</p>
+    <h2>{t('assoc.statutes.title')}</h2>
+    <blockquote>
+      <p>{t('assoc.object.1')}</p>
+      <p>{t('assoc.object.2')}</p>
+      <p>{t('assoc.object.3')}</p>
+    </blockquote>
+    {t('assoc.translationNote') && <p class="meta">{t('assoc.translationNote')}</p>}
 
-    <h2>{t('legal.reuse.title')}</h2>
-    <p>{t('legal.reuse.text')}</p>
+    <h2>{t('legal.tax.title')}</h2>
+    <ul>
+      <li>{t('legal.tax.vat')}</li>
+      <li>{t('legal.tax.generalInterest')}</li>
+    </ul>
 
-    <h2>{t('legal.ai.title')}</h2>
-    <p>{t('legal.ai.text')}</p>
+    <h2>{t('legal.host.title')}</h2>
+    <address>
+      GitHub, Inc.<br />
+      88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, {t('legal.host.country')}<br />
+      {t('legal.host.phone')} <a href="tel:+14157354488">+1 415 735 4488</a><br />
+      <a href="https://pages.github.com" target="_blank" rel="noopener">https://pages.github.com<span class="sr-only"> {t('a11y.newTab')}</span></a>
+    </address>
+
+    <h2>{t('legal.ip.title')}</h2>
+    <Fragment set:html={license} />
+    <p>{t('legal.ip.projects')}</p>
+
+    <h2>{t('legal.privacy.title')}</h2>
+    <p>{t('legal.privacy.none')} {t('legal.privacy.lang')}</p>
+    <p>
+      {t('legal.privacy.host')}{' '}
+      <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">{t('legal.privacy.hostLink')}<span class="sr-only"> {t('a11y.newTab')}</span></a>.
+    </p>
+    <p>{t('legal.privacy.contact')} <ContactButton variant="link" /></p>
+    <p>{t('legal.privacy.projects')}</p>
+
+    <h2>{t('legal.links.title')}</h2>
+    <p>{t('legal.links.text')}</p>
   </div>
 </BaseLayout>

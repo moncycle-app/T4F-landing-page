@@ -3,14 +3,15 @@
  * Anti-spam e-mail button: the address never appears as-is in the HTML,
  * it is assembled client-side from its two halves.
  * Without JavaScript, CSS displays it (readable, but absent from the page text).
+ * Defaults to the association's contact address.
  */
 interface Props {
-  user: string;
-  domain: string;
+  user?: string;
+  domain?: string;
   /** "button" (default): call-to-action button; "link": plain inline link */
   variant?: 'button' | 'link';
 }
-const { user, domain, variant = 'button' } = Astro.props;
+const { user = 'hello', domain = 'tech4fertility.org', variant = 'button' } = Astro.props;
 ---
 
 {variant === 'button' ? (
@@ -29,8 +30,8 @@ const { user, domain, variant = 'button' } = Astro.props;
   document.querySelectorAll<HTMLAnchorElement>('a[data-mail]').forEach((a) => {
     const s = a.querySelector<HTMLElement>('[data-u]');
     if (!s) return;
-    const addr = s.dataset.u + String.fromCharCode(64) + s.dataset.d;
-    a.href = 'mai' + 'lto:' + addr;
+    const addr = `${s.dataset.u}@${s.dataset.d}`;
+    a.href = `mailto:${addr}`;
     s.textContent = addr;
   });
 </script>

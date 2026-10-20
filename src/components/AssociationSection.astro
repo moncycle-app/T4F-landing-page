@@ -1,0 +1,71 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { sectionIds, type Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  index: number;
+  total: number;
+}
+const { lang, index, total } = Astro.props;
+const t = useTranslations(lang);
+
+// Short summary of the statutory object; the full text is shown below
+const pillars = [
+  {
+    title: t('assoc.pillar1.title'),
+    text: t('assoc.pillar1.text'),
+    // Phone with a cycle ring
+    icon: '<rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><circle cx="12" cy="11" r="3"/><path d="M10.5 18h3"/>',
+  },
+  {
+    title: t('assoc.pillar2.title'),
+    text: t('assoc.pillar2.text'),
+    // Leaf
+    icon: '<path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14z"/><path d="M5 19 13 11"/>',
+  },
+  {
+    title: t('assoc.pillar3.title'),
+    text: t('assoc.pillar3.text'),
+    // Open book
+    icon: '<path d="M3 5.5c3-1 6-1 9 1 3-2 6-2 9-1v13c-3-1-6-1-9 1-3-2-6-2-9-1z"/><path d="M12 6.5v13"/>',
+  },
+  {
+    title: t('assoc.pillar4.title'),
+    text: t('assoc.pillar4.text'),
+    // Two linked circles
+    icon: '<circle cx="9" cy="12" r="5.5"/><circle cx="15" cy="12" r="5.5"/>',
+  },
+];
+const note = t('assoc.translationNote');
+---
+
+<section class="section section-association" id={sectionIds[lang].association} aria-labelledby="association-title">
+  <div class="wrap">
+    <SectionHeading index={index} total={total} id="association-title" title={t('assoc.title')} lead={t('assoc.lead')} />
+
+    <ul class="pillars">
+      {pillars.map((p) => (
+        <li class="pillar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" set:html={p.icon} />
+          <h3>{p.title}</h3>
+          <p>{p.text}</p>
+        </li>
+      ))}
+    </ul>
+
+    <figure class="statutes">
+      <figcaption>
+        <span class="statutes-source">{t('assoc.statutes.source')}</span>
+        <h3>{t('assoc.statutes.title')}</h3>
+      </figcaption>
+      <blockquote>
+        <p>{t('assoc.object.1')}</p>
+        <p>{t('assoc.object.2')}</p>
+        <p>{t('assoc.object.3')}</p>
+      </blockquote>
+      {note && <p class="statutes-note">{note}</p>}
+    </figure>
+  </div>
+</section>

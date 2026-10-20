@@ -15,7 +15,7 @@ const posts = await getPosts(lang);
 const alternates = Object.fromEntries(langs.map((code) => [code, newsPath(code)])) as Record<Lang, string>;
 ---
 
-<BaseLayout lang={lang} title={`${t('news.title')} | Tech4Fertility`} description={t('news.description')} alternates={alternates}>
+<BaseLayout lang={lang} title={`${t('news.title')} | Tech 4 Fertility`} description={t('news.description')} alternates={alternates}>
   <h1 class="page-title">{t('news.title')}</h1>
   <p class="lede">{t('news.description')}</p>
 

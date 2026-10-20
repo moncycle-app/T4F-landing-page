@@ -1,24 +1,39 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ContactButton from '../../components/ContactButton.astro';
-import { langStaticPaths, useTranslations } from '../../i18n/utils';
+import CycleMotif from '../../components/CycleMotif.astro';
+import AssociationSection from '../../components/AssociationSection.astro';
+import ProjectsSection from '../../components/ProjectsSection.astro';
+import TeamSection from '../../components/TeamSection.astro';
+import DonateSection from '../../components/DonateSection.astro';
+import ContactSection from '../../components/ContactSection.astro';
+import { langStaticPaths, sectionPath, useTranslations } from '../../i18n/utils';
 import type { Lang } from '../../i18n/ui';
 
 export const getStaticPaths = langStaticPaths;
 
 const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
+
+// Sections in display order (numbered 01 → 05)
+const sections = [AssociationSection, ProjectsSection, TeamSection, DonateSection, ContactSection];
 ---
 
-<BaseLayout lang={lang} title={t('home.title')} description={t('home.description')} mainClass="center">
-  <h1>
-    <span class="sr-only">Tech4Fertility</span>
-    <span class="word" aria-hidden="true">Tech<span class="for"><span><span>for</span></span></span><span class="four"><span>4</span></span>Fertility</span>
-  </h1>
-  <p class="tagline">{t('site.tagline')}</p>
+<BaseLayout lang={lang} title={t('home.title')} description={t('home.description')} mainClass="home">
+  <section class="hero" aria-labelledby="hero-title">
+    <CycleMotif class="hero-cycle" />
+    <div class="wrap">
+      <p class="badge"><span class="badge-dot" aria-hidden="true"></span>{t('site.badge')}</p>
+      <h1 id="hero-title">
+        <span class="sr-only">{t('site.title')}</span>
+        <span class="word" aria-hidden="true">Tech<span class="for"><span><span>for</span></span></span><span class="four"><span>4</span></span>Fertility</span>
+      </h1>
+      <p class="tagline">{t('site.tagline')}</p>
+      <p class="hero-actions">
+        <a class="btn btn-primary" href={sectionPath(lang, 'projects')}>{t('hero.ctaProjects')}</a>
+        <a class="btn btn-ghost" href={sectionPath(lang, 'donate')}>{t('hero.ctaDonate')}</a>
+      </p>
+    </div>
+  </section>
 
-  <h2>{t('home.wip')}</h2>
-  <p class="message">{t('home.message')}</p>
-
-  <ContactButton user="hello" domain="tech4fertility.org" />
+  {sections.map((Section, i) => <Section lang={lang} index={i + 1} total={sections.length} />)}
 </BaseLayout>
