@@ -962,7 +962,15 @@ h2::before {
 .prose h2 { margin: 2.5rem 0 .6rem; }
 .prose h3 { margin: 2rem 0 .5rem; font-size: 1.1rem; }
 .prose a { color: inherit; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 3px; }
-.prose img { max-width: 100%; height: auto; border-radius: 12px; }
+.prose img { display: block; max-width: 100%; max-height: 30rem; width: auto; height: auto; margin: 1.5rem 0; border-radius: 12px; cursor: zoom-in; }
+.prose img:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+/* Size set by the author with the image title: ![alt](/images/news/x.png "small") */
+.prose img[title="xs"] { max-height: 14rem; }
+.prose img[title="s"] { max-height: 22rem; }
+.prose img[title="m"] { max-height: 30rem; }
+.prose img[title="l"] { max-height: 40rem; }
+.prose img[title="xl"] { max-height: 54rem; }
+.prose img[title="xxl"] { max-height: none; width: 100%; }
 .prose blockquote { margin: 1.5rem 0; padding-left: 1rem; border-left: 3px solid var(--accent); color: var(--muted); }
 .prose code { font-size: .9em; padding: .1em .35em; border-radius: 6px; background: var(--line); }
 .prose pre { overflow-x: auto; padding: 1rem; border-radius: 12px; }
@@ -970,6 +978,38 @@ h2::before {
 .prose ul { padding-left: 1.25rem; }
 .prose li + li { margin-top: .4rem; }
 .prose address { font-style: normal; }
+/* Lightbox (native <dialog>, filled by the script of the post page) */
+.lightbox { box-sizing: border-box; width: 100%; max-width: 100vw; height: 100dvh; max-height: 100dvh; margin: 0; padding: 1rem; overflow: hidden; border: 0; background: transparent; }
+.lightbox[open] { display: grid; place-items: center; }
+.lightbox::backdrop { background: rgba(10, 9, 6, .88); }
+/* Never larger than the viewport (minus padding) nor than the image's own size, ratio kept */
+.lightbox img { display: block; width: auto; height: auto; max-width: calc(100vw - 2rem); max-height: calc(100dvh - 2rem); object-fit: contain; border-radius: 8px; cursor: zoom-out; }
+/* No page scrollbar behind the open lightbox */
+html:has(.lightbox[open]) { overflow: hidden; }
+.lightbox-close {
+  position: fixed; top: 1rem; right: 1rem; width: 2.75rem; height: 2.75rem;
+  border: 0; border-radius: 50%; background: var(--surface); color: var(--text);
+  font-size: 1.75rem; line-height: 1; cursor: pointer;
+}
+.lightbox-close:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+/* Tables: bordered, rounded, header band, zebra rows; scrolls sideways on narrow screens */
+.prose table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  margin: 1.75rem 0;
+  overflow-x: auto;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  border-spacing: 0;
+  font-size: .9375rem;
+  line-height: 1.5;
+}
+.prose th, .prose td { padding: .65rem .9rem; text-align: left; vertical-align: top; }
+.prose th { background: var(--surface-2); border-bottom: 1px solid var(--line-strong); font-weight: 700; white-space: nowrap; }
+.prose td + td, .prose th + th { border-left: 1px solid var(--line); }
+.prose tbody tr + tr td { border-top: 1px solid var(--line); }
+.prose tbody tr:nth-child(even) td { background: var(--surface); }
 
 /* Legal page */
 .legal blockquote { color: var(--text); font-family: var(--serif); font-size: 1.05rem; }

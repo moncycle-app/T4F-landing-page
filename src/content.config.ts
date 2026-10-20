@@ -17,6 +17,8 @@ const news = defineCollection({
     updatedDate: z.coerce.date().optional(),
     translationKey: z.string(),
     draft: z.boolean().default(false),
+    // false = not announced by other websites and apps (skipped in /latest-news.json); no effect on this site
+    showInThirdParty: z.boolean().default(true),
   }),
 });
 

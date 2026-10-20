@@ -1,0 +1,19 @@
+---
+/** Language-specific error page, shown for unknown URLs under /fr/… and /en/… (see pages/404.astro) */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { langStaticPaths, localizedPath, useTranslations } from '../../i18n/utils';
+import type { Lang } from '../../i18n/ui';
+
+export const getStaticPaths = langStaticPaths;
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+---
+
+<BaseLayout lang={lang} title={`404 | ${t('site.title')}`} description={t('notFound.text')} mainClass="center" noindex>
+  <h1 class="page-title">404</h1>
+  <p class="lede">{t('notFound.text')}</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href={localizedPath(lang)}>{t('notFound.back')}</a>
+  </div>
+</BaseLayout>

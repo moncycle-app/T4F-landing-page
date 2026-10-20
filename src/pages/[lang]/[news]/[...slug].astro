@@ -46,5 +46,35 @@ const { title, description, pubDate, updatedDate } = post.data;
     <div class="prose">
       <Content />
     </div>
+    <dialog class="lightbox" aria-label={t('news.closeImage')}>
+      <button type="button" class="lightbox-close" aria-label={t('news.closeImage')}>×</button>
+      <img alt="" />
+    </dialog>
   </article>
 </BaseLayout>
+
+<script>
+  // Lightbox: click an image in the post to view it full size (Esc, click outside or × to close)
+  const dialog = document.querySelector<HTMLDialogElement>('.lightbox');
+  const big = dialog?.querySelector('img');
+  if (dialog && big) {
+    document.querySelectorAll<HTMLImageElement>('.prose img').forEach((img) => {
+      img.tabIndex = 0;
+      img.setAttribute('role', 'button');
+      const open = () => {
+        big.src = img.currentSrc || img.src;
+        big.alt = img.alt;
+        dialog.showModal();
+      };
+      img.addEventListener('click', open);
+      img.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          open();
+        }
+      });
+    });
+    // Any click closes it (the backdrop counts as a click on the dialog itself)
+    dialog.addEventListener('click', () => dialog.close());
+  }
+</script>

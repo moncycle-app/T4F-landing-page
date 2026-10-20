@@ -46,7 +46,8 @@ src/
   pages/[lang]/legal.astro    Legal notice (mentions légales); renders the page language's half of LICENSE.md
   pages/llms.txt.ts           /llms.txt: Markdown overview of the site for LLMs (pages + news posts)
   pages/[lang]/[news]/        News list and post page (/en/news/…, /fr/actualites/…)
-  pages/404.astro             Bilingual error page
+  pages/404.astro             Bilingual error page (server's 404); under /fr/ or /en/ it swaps itself for
+                              pages/[lang]/404.astro, the page in that language
   styles/global.css           Global styles (color variables, light/dark theme)
 ```
 
@@ -94,6 +95,7 @@ pubDate: 2026-10-20
 updatedDate: 2026-11-02     # optional
 translationKey: my-post     # same value in both languages
 draft: false                # true = only visible in dev
+showInThirdParty: true      # optional, default true; false = skipped by /latest-news.json (no effect on this site)
 ---
 
 Markdown content…
@@ -107,7 +109,7 @@ Markdown content…
   Build its URL with `newsRssPath(lang)`. It is advertised in `BaseLayout` (`<link rel="alternate">`),
   the footer and `llms.txt`.
 - `/latest-news.json` (`src/pages/latest-news.json.ts`): metadata (no content) of the latest published post of
-  each language, under the `en` and `fr` keys, for other sites and apps to notify their users. Keep its
+  each language with `showInThirdParty` on (the previous one is shown when the latest has it off), under the `en` and `fr` keys, for other sites and apps to notify their users. Keep its
   fields stable: external consumers depend on them. Not language-prefixed, as it covers both languages.
 - Post images: put them in `public/images/news/` and reference them as `/images/news/my-image.jpg`.
 - The home page hero shows a "New" banner linking to the latest post of its language for 30 days after

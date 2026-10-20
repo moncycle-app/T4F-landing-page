@@ -117,6 +117,7 @@ draft: false
 | `updatedDate`    | no       | Date of a significant update, same format. Displayed as "Updated on…" next to the publication date. Remove the line if there was no update. |
 | `translationKey` | yes      | Identifier shared by the two translations of a post (see [Translations](#translations)). Any short word or phrase with lowercase letters and hyphens. |
 | `draft`          | no       | `true` hides the post from the published site (see [Drafts](#drafts)). Defaults to `false`.                  |
+| `showInThirdParty` | no     | `false` keeps the post out of what other websites and apps announce (`/latest-news.json`); they show the previous post instead. No effect on this site. Defaults to `true`. |
 
 You do not write the date in the text, nor the title again: the site displays both automatically,
 formatted for the reader's language ("15 November 2026" / "15 novembre 2026").
@@ -234,6 +235,17 @@ Good practice:
 - **Always describe the image** between the square brackets. This text is read aloud to blind
   readers and shown when the image cannot load. Describe what the image shows, not "image" or
   "photo". For a purely decorative image, leave the brackets empty: `![](…)`.
+- **Size**: by default an image is left-aligned and at most 30 rem (about 480 px) tall (size `"m"`). To change it, add a size word in quotes after the address:
+  `![description](/images/news/screen.png "s")`. Readers can click any image to see it full screen.
+
+  | Size    | Maximum height              | Typical use                      |
+  | ------- | --------------------------- | -------------------------------- |
+  | `"xs"`  | 14 rem (about 225 px)       | icon, small badge                |
+  | `"s"`   | 22 rem (about 350 px)       | phone screenshot                 |
+  | `"m"`   | 30 rem (about 480 px)       | default, most images             |
+  | `"l"`   | 40 rem (about 640 px)       | large photo                      |
+  | `"xl"`  | 54 rem (about 865 px)       | detailed photo or diagram        |
+  | `"xxl"` | no limit, full text width   | wide banner, large diagram       |
 - **File names**: same rules as posts (lowercase, hyphens, no spaces or accents).
 - **Weight**: resize photos to at most 1600 pixels wide and compress them (JPEG quality around 80,
   or WebP). Aim for less than 300 KB per image: the site does not shrink images for you.
@@ -255,7 +267,8 @@ Each language has an RSS feed listing its published posts, newest first: `/en/ne
 
 The latest published post of each language is also available as JSON, without its content, at
 [`/latest-news.json`](https://tech4fertility.org/latest-news.json). Other websites and apps use it to
-tell their users there is news to read. Nothing to do on your side either.
+tell their users there is news to read. Nothing to do on your side, unless a post should not be announced
+there: set `showInThirdParty: false` and the previous post is shown instead.
 
 ### Translations
 

@@ -1,7 +1,7 @@
 ---
 title: Welcome to Tech 4 Fertility news
 description: The association’s first news post, introducing what you will find here.
-pubDate: 2026-10-20
+pubDate: 2026-10-19
 translationKey: welcome
 draft: false
 ---

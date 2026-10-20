@@ -28,7 +28,7 @@ export default defineConfig({
   },
   integrations: [
     // Language alternates are declared by each page's hreflang tags.
-    // The root (a noindex redirect) is excluded.
-    sitemap({ filter: (page) => page !== 'https://tech4fertility.org/' }),
+    // The root (a noindex redirect) and the 404 pages are excluded.
+    sitemap({ filter: (page) => page !== 'https://tech4fertility.org/' && !page.endsWith('/404/') }),
   ],
 });

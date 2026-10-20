@@ -1,11 +1,29 @@
 ---
+/**
+ * Error page served by the web server for every unknown URL.
+ * Under /fr/… or /en/… it swaps itself for that language's page (pages/[lang]/404.astro);
+ * elsewhere (or without JavaScript) it shows both languages.
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { defaultLang } from '../i18n/ui';
-import { localizedPath } from '../i18n/utils';
+import { defaultLang, langs } from '../i18n/ui';
+import { localizedPath, useTranslations } from '../i18n/utils';
 ---
 
-<BaseLayout lang={defaultLang} title="Page not found / Page introuvable | Tech 4 Fertility" description="Page not found / Page introuvable" alternates={{ fr: '/fr/', en: '/en/' }} mainClass="center">
+<BaseLayout lang={defaultLang} title="Page not found / Page introuvable | Tech 4 Fertility" description="Page not found / Page introuvable" alternates={{ fr: '/fr/', en: '/en/' }} mainClass="center" noindex>
   <h1 class="page-title">404</h1>
-    <p class="lede" lang="en">This page does not exist. <a href={localizedPath('en')}>Back to the home page</a></p>
-  <p class="lede" lang="fr">Cette page n’existe pas. <a href={localizedPath('fr')}>Retour à l’accueil</a></p>
+  {langs.map((code) => <p class="lede" lang={code}>{useTranslations(code)('notFound.text')}</p>)}
+  <div class="hero-actions">
+    {langs.map((code) => (
+      <a class="btn btn-primary" lang={code} href={localizedPath(code)}>{useTranslations(code)('notFound.back')}</a>
+    ))}
+  </div>
+  <script is:inline define:vars={{ langs }}>
+    var lang = location.pathname.split('/')[1];
+    if (langs.indexOf(lang) >= 0) {
+      fetch('/' + lang + '/404/')
+        .then(function (r) { return r.ok ? r.text() : Promise.reject(); })
+        .then(function (html) { document.open(); document.write(html); document.close(); })
+        .catch(function () {});
+    }
+  </script>
 </BaseLayout>

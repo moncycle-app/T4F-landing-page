@@ -1,7 +1,7 @@
 ---
 title: Bienvenue dans les actualités de Tech 4 Fertility
 description: Première actualité de l’association, pour présenter ce que vous trouverez dans cette rubrique.
-pubDate: 2026-10-20
+pubDate: 2026-10-19
 translationKey: welcome
 draft: false
 ---

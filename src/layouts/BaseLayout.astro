@@ -15,9 +15,11 @@ interface Props {
   alternates?: Partial<Record<Lang, string>>;
   /** Class added to <main> */
   mainClass?: string;
+  /** Asks search engines not to index the page */
+  noindex?: boolean;
 }
 
-const { lang, title, description, alternates: custom = {}, mainClass } = Astro.props;
+const { lang, title, description, alternates: custom = {}, mainClass, noindex } = Astro.props;
 const t = useTranslations(lang);
 
 const path = Astro.url.pathname;
@@ -45,6 +47,7 @@ const sectionLinks = sectionKeys.map((key) => ({
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#15130d" media="(prefers-color-scheme: dark)" />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
     {langs.map((code) => (
       <link rel="alternate" hreflang={code} href={new URL(alternates[code], Astro.site)} />
