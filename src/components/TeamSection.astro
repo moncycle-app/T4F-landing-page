@@ -89,7 +89,7 @@ const members: Member[] = [
         return (
           <li class="member">
             <div class="avatar" aria-hidden="true">
-              {m.photo ? <img src={m.photo} alt="" width="88" height="88" loading="lazy" /> : <span>{m.firstName[0]}{m.lastName[0]}</span>}
+              {m.photo ? <img src={m.photo} alt="" width="88" height="88" loading="lazy" /> : <span>{m.firstName[0]}{m.lastName.split(" ").at(-1)![0]}</span>}
             </div>
             <h3>{name}</h3>
             <p class="member-role">{m.role[lang]}</p>
