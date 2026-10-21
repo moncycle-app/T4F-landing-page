@@ -124,7 +124,7 @@ export const ui = {
     'contact.address': 'Adresse postale',
 
     'news.title': 'Actualités',
-    'news.description': 'Les actualités de l’association Tech 4 Fertility.',
+    'news.description': 'Les actualités de l’association Tech 4 Fertility : nouveautés et mises à jour sur nos projets.',
     'news.empty': 'Aucune actualité pour le moment.',
     'news.new': 'Nouveau',
     'news.back': '← Toutes les actualités',
@@ -254,7 +254,7 @@ export const ui = {
     'contact.address': 'Postal address',
 
     'news.title': 'News',
-    'news.description': 'News from the Tech 4 Fertility association.',
+    'news.description': 'News from the Tech 4 Fertility association: new developments and project updates.',
     'news.empty': 'No news yet.',
     'news.new': 'New',
     'news.back': '← All news',
