@@ -4,7 +4,7 @@ import ContactButton from '../../components/ContactButton.astro';
 import PostalAddress from '../../components/PostalAddress.astro';
 import { compiledContent as licenseHtml } from '../../../LICENSE.md';
 import { formatDate, langStaticPaths, useTranslations } from '../../i18n/utils';
-import type { Lang } from '../../i18n/ui';
+import { links, type Lang } from '../../i18n/ui';
 
 export const getStaticPaths = langStaticPaths;
 
@@ -91,7 +91,11 @@ const note = t('legal.translationNote');
     <p>{t('legal.privacy.contact')} <ContactButton variant="link" /></p>
     <p>{t('legal.privacy.projects')}</p>
 
-    <h2>{t('legal.links.title')}</h2>
-    <p>{t('legal.links.text')}</p>
+    <h2>{t('legal.tos.title')}</h2>
+    <p>{t('legal.tos.text')}</p>
+    <ul>
+      <li><a href={links.moncycleTosFr} target="_blank" rel="noopener">{t('legal.tos.fr')}<span class="sr-only"> {t('a11y.newTab')}</span></a></li>
+      <li><a href={links.moncycleTosEn} target="_blank" rel="noopener">{t('legal.tos.en')}<span class="sr-only"> {t('a11y.newTab')}</span></a></li>
+    </ul>
   </div>
 </BaseLayout>

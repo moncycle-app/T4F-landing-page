@@ -35,6 +35,8 @@ export const links = {
   // TODO: replace with the association's HelloAsso donation page (placeholder: HelloAsso home page)
   helloAsso: 'https://www.helloasso.com/',
   moncycle: 'https://www.moncycle.app/',
+  moncycleTosFr: 'https://www.moncycle.app/ToS/term_of_service_fr.html',
+  moncycleTosEn: 'https://www.moncycle.app/ToS/term_of_service_en.html',
   moncycleSource: 'https://github.com/moncycle-app/backend-api-web-app',
 } as const;
 
@@ -168,8 +170,10 @@ export const ui = {
     'legal.privacy.hostLink': 'déclaration de confidentialité',
     'legal.privacy.contact': 'Pour toute demande :',
     'legal.privacy.projects': 'Chaque projet (par exemple moncycle.app) dispose de sa propre politique de confidentialité sur son site.',
-    'legal.links.title': 'Liens externes',
-    'legal.links.text': 'Ce site contient des liens vers des sites externes (moncycle.app, HelloAsso, GitHub, réseaux sociaux) dont le contenu ne relève pas de la responsabilité de l’association.',
+    'legal.tos.title': 'Conditions d’utilisation de moncycle.app',
+    'legal.tos.text': 'Vous cherchez les conditions d’utilisation de moncycle.app ?',
+    'legal.tos.fr': 'Conditions d’utilisation (français)',
+    'legal.tos.en': 'Conditions d’utilisation (anglais)',
   },
   en: {
     'site.title': 'Tech 4 Fertility',
@@ -298,8 +302,10 @@ export const ui = {
     'legal.privacy.hostLink': 'privacy statement',
     'legal.privacy.contact': 'For any request:',
     'legal.privacy.projects': 'Each project (e.g. moncycle.app) has its own privacy policy on its own website.',
-    'legal.links.title': 'External links',
-    'legal.links.text': 'This website links to external websites (moncycle.app, HelloAsso, GitHub, social networks) whose content is not the responsibility of the association.',
+    'legal.tos.title': 'moncycle.app terms of service',
+    'legal.tos.text': 'Looking for the terms of service of moncycle.app?',
+    'legal.tos.fr': 'Terms of service (French)',
+    'legal.tos.en': 'Terms of service (English)',
   },
 } as const satisfies Record<Lang, Record<string, string>>;
 
