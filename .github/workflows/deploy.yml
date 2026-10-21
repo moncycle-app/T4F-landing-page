@@ -1,0 +1,54 @@
+# .github/workflows/deploy.yml
+name: Deploy to GitHub Pages
+
+on:
+  # Every PR targeting main gets a build check (no deploy)
+  pull_request:
+    branches: [main]
+  # Every merge/push to main builds AND deploys
+  push:
+    branches: [main]
+  # Manual run from the Actions tab
+  workflow_dispatch:
+
+# Minimal default permissions; deploy job gets extra ones below
+permissions:
+  contents: read
+
+# Cancel outdated PR builds, but never interrupt a production deploy
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    # This name is what you select as the required status check
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install, build, and upload site
+        uses: withastro/action@v6
+        # with:
+        #   path: .              # Astro project root, if not the repo root
+        #   node-version: 24     # default is 24
+        #   package-manager: pnpm@latest  # auto-detected from your lockfile
+
+  deploy:
+    name: deploy
+    needs: build
+    # Only deploy from main, never from a pull request
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

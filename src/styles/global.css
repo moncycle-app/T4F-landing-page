@@ -37,22 +37,22 @@
   :root {
     --accent-hover: #f2cb2e;
     --accent-ink: #f2cb2e;
-    --accent-soft: #2a2311;
+    --accent-soft: #241f0f;
     --logo-ink: #ffffff;
     --logo-four: #fbe8a3;
     --four: #e3b607;
-    --bg: #15130d;
-    --surface: #1d1a12;
-    --surface-2: #1a170f;
-    --text: #f3efe2;
-    --muted: #aba490;
-    --line: rgba(243, 239, 226, .12);
-    --line-strong: rgba(243, 239, 226, .26);
-    --field-border: #8d8672;
-    --phone-frame: #3a3426;
+    --bg: #100f0c;
+    --surface: #181713;
+    --surface-2: #151410;
+    --text: #f2f0e8;
+    --muted: #a7a395;
+    --line: rgba(242, 240, 232, .12);
+    --line-strong: rgba(242, 240, 232, .26);
+    --field-border: #898577;
+    --phone-frame: #343127;
     --shadow: none;
-    --img-border: rgba(243, 239, 226, .35);
-    --img-shadow: 0 0 32px -4px rgba(243, 239, 226, .16);
+    --img-border: rgba(242, 240, 232, .35);
+    --img-shadow: 0 0 32px -4px rgba(242, 240, 232, .16);
   }
 }
 
@@ -762,9 +762,9 @@ h2::before {
 
 /* Donate: a dark band in both themes, built by overriding the color variables */
 .section-donate {
-  --bg: #1c1913;
-  --surface: #25211a;
-  --surface-2: #2c271e;
+  --bg: #171513;
+  --surface: #1f1d1a;
+  --surface-2: #26231f;
   --text: #f4f0e4;
   --muted: #b5ae9a;
   --line: rgba(244, 240, 228, .12);
@@ -876,6 +876,9 @@ h2::before {
   background: var(--surface-2);
   color: var(--muted);
   font-size: .9375rem;
+}
+@media (prefers-color-scheme: dark) {
+  .foot { background: #1a170f; }
 }
 .foot p { margin: 0; }
 .foot-grid { display: grid; gap: 2.25rem 1.5rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
