@@ -15,7 +15,20 @@ export const sectionIds = {
 } as const satisfies Record<Lang, Record<string, string>>;
 
 export type SectionKey = keyof (typeof sectionIds)[typeof defaultLang];
-export const sectionKeys = Object.keys(sectionIds[defaultLang]) as SectionKey[];
+
+/**
+ * Home page sections shown on the site. Set a section to `true` to bring it back: the page, the header,
+ * the footer, the hero buttons and the section numbering all follow.
+ */
+export const enabledSections: Record<SectionKey, boolean> = {
+  association: true,
+  projects: true,
+  team: false, // unfinished, hidden for now
+  donate: false, // unfinished, hidden for now (also hides the donate buttons)
+  contact: true,
+};
+
+export const sectionKeys = (Object.keys(sectionIds[defaultLang]) as SectionKey[]).filter((key) => enabledSections[key]);
 
 /** External links used in several places. */
 export const links = {

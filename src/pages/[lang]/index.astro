@@ -7,15 +7,22 @@ import DonateSection from '../../components/DonateSection.astro';
 import ContactSection from '../../components/ContactSection.astro';
 import LatestNews from '../../components/LatestNews.astro';
 import { langStaticPaths, sectionPath, useTranslations } from '../../i18n/utils';
-import type { Lang } from '../../i18n/ui';
+import { enabledSections, type Lang, type SectionKey } from '../../i18n/ui';
 
 export const getStaticPaths = langStaticPaths;
 
 const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
 
-// Sections in display order (numbered 01 → 05)
-const sections = [AssociationSection, ProjectsSection, TeamSection, DonateSection, ContactSection];
+// Sections in display order, numbered 01 → n; the enabled ones are set in `enabledSections` (ui.ts)
+const allSections: [SectionKey, typeof AssociationSection][] = [
+  ['association', AssociationSection],
+  ['projects', ProjectsSection],
+  ['team', TeamSection],
+  ['donate', DonateSection],
+  ['contact', ContactSection],
+];
+const sections = allSections.filter(([key]) => enabledSections[key]).map(([, Section]) => Section);
 ---
 
 <BaseLayout lang={lang} title={t('home.title')} description={t('home.description')} mainClass="home">
@@ -29,7 +36,7 @@ const sections = [AssociationSection, ProjectsSection, TeamSection, DonateSectio
       <p class="tagline">{t('site.tagline')}</p>
       <p class="hero-actions">
         <a class="btn btn-primary" href={sectionPath(lang, 'projects')}>{t('hero.ctaProjects')}</a>
-        <a class="btn btn-ghost" href={sectionPath(lang, 'donate')}>{t('hero.ctaDonate')}</a>
+        {enabledSections.donate && <a class="btn btn-ghost" href={sectionPath(lang, 'donate')}>{t('hero.ctaDonate')}</a>}
       </p>
       <LatestNews lang={lang} />
     </div>

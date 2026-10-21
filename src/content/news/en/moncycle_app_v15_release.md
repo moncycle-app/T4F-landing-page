@@ -3,7 +3,7 @@ title: "moncycle.app v15: what's new and how to sort your sensations"
 description: "moncycle.app version 15 is online. Here is what's new, how to give a type (sensation or observation) to your old words, and what changes in the terms of service."
 pubDate: 2026-10-20
 translationKey: moncycle-v15
-draft: false
+draft: true
 ---
 
 Version 15 of moncycle.app is online. You sign in as usual and your cycles are there. Only one thing needs a little of your time: the words you used to write in the "sensation" field now need a type. The second part explains how.

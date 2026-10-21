@@ -3,7 +3,7 @@ title: "moncycle.app v15 : les nouveautés et le tri de vos sensations"
 description: "La version 15 de moncycle.app est en ligne. Voici les nouveautés, comment donner un type (sensation ou observation) à vos anciens mots, et ce qui change dans les conditions d’utilisation."
 pubDate: 2026-10-20
 translationKey: moncycle-v15
-draft: false
+draft: true
 ---
 
 La version 15 de moncycle.app est en ligne. Vous vous connectez comme d’habitude et vos cycles sont là. Une seule chose demande un peu de votre temps : les mots que vous écriviez dans le champ « sensation » doivent maintenant recevoir un type. La deuxième partie vous explique comment faire.

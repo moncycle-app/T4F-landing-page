@@ -4,7 +4,7 @@ import Logo from '../components/Logo.astro';
 import LanguagePicker from '../components/LanguagePicker.astro';
 import ContactButton from '../components/ContactButton.astro';
 import PostalAddress from '../components/PostalAddress.astro';
-import { langs, links, sectionKeys, type Lang, type UiKey } from '../i18n/ui';
+import { enabledSections, langs, links, sectionKeys, type Lang, type UiKey } from '../i18n/ui';
 import { localizedPath, sectionPath, useTranslations } from '../i18n/utils';
 import { newsPath, newsRssPath, newsSegment } from '../i18n/news';
 
@@ -119,10 +119,14 @@ const sectionLinks = sectionKeys.map((key) => ({
             <ul>
               <li><a href={links.moncycle} target="_blank" rel="noopener">moncycle.app<span class="sr-only"> {t('a11y.newTab')}</span></a></li>
             </ul>
-            <h2>{t('footer.support')}</h2>
-            <a class="foot-donate" href={links.helloAsso} target="_blank" rel="noopener">
-              {t('nav.donate')}<span class="sr-only"> {t('a11y.newTab')}</span>
-            </a>
+            {enabledSections.donate && (
+              <>
+                <h2>{t('footer.support')}</h2>
+                <a class="foot-donate" href={links.helloAsso} target="_blank" rel="noopener">
+                  {t('nav.donate')}<span class="sr-only"> {t('a11y.newTab')}</span>
+                </a>
+              </>
+            )}
           </div>
 
           <div class="foot-col">

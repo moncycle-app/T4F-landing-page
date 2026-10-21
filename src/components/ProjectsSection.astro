@@ -24,9 +24,10 @@ interface Project {
   baseline: Localized;
   description: Localized;
   points: Localized<string[]>;
-  figures?: { value: number; label: Localized }[];
-  /** Where the figures come from */
+  figures?: { key: 'accounts' | 'cycles' | 'observations'; value: number; label: Localized }[];
+  /** Where the figures come from (fallback values and note, replaced by the live ones once loaded) */
   figuresNote?: Localized;
+  figuresLiveNote?: Localized;
 }
 
 /**
@@ -63,13 +64,17 @@ const projects: Project[] = [
       ],
     },
     figures: [
-      { value: 1900, label: { fr: 'femmes et couples', en: 'women and couples' } },
-      { value: 12000, label: { fr: 'cycles enregistrés', en: 'cycles recorded' } },
-      { value: 260000, label: { fr: 'observations journalières', en: 'daily observations' } },
+      { key: 'accounts', value: 1900, label: { fr: 'femmes et couples', en: 'women and couples' } },
+      { key: 'cycles', value: 12000, label: { fr: 'cycles enregistrés', en: 'cycles recorded' } },
+      { key: 'observations', value: 260000, label: { fr: 'observations journalières', en: 'daily observations' } },
     ],
     figuresNote: {
       fr: 'Chiffres affichés sur moncycle.app, octobre 2026',
       en: 'Figures shown on moncycle.app, October 2026',
+    },
+    figuresLiveNote: {
+      fr: 'Chiffres issus de moncycle.app, mis à jour en direct',
+      en: 'Figures from moncycle.app, updated live',
     },
   },
 ];
@@ -99,16 +104,16 @@ const statusLabel = { live: t('projects.status.live') };
             </ul>
 
             {p.figures && (
-              <figure class="figures">
+              <figure class="figures" data-live-figures data-locale={number.resolvedOptions().locale} data-live-note={p.figuresLiveNote?.[lang]}>
                 <dl>
                   {p.figures.map((f) => (
                     <div>
                       <dt>{f.label[lang]}</dt>
-                      <dd>{number.format(f.value)}</dd>
+                      <dd data-figure={f.key}>{number.format(f.value)}</dd>
                     </div>
                   ))}
                 </dl>
-                {p.figuresNote && <figcaption>{p.figuresNote[lang]}</figcaption>}
+                {p.figuresNote && <figcaption data-figures-note>{p.figuresNote[lang]}</figcaption>}
               </figure>
             )}
 
@@ -150,3 +155,53 @@ const statusLabel = { live: t('projects.status.live') };
     </ul>
   </div>
 </section>
+
+<script>
+  // Live figures from moncycle.app. The values rendered at build time stay in place if anything fails.
+  // Two API formats are supported so the switch from v1 to v2 needs no change here:
+  //   v2: { data: { accounts, cycles, observations } }
+  //   v1: { moncycle_app_nb_compte, moncycle_app_nb_cycle, moncycle_app_nb_total_observation }
+  type Figures = Record<'accounts' | 'cycles' | 'observations', number>;
+  const endpoints = ['https://tableau.moncycle.app/api/v2/pub_stat', 'https://tableau.moncycle.app/api/pub_stat'];
+
+  const count = (value: unknown) => (typeof value === 'number' && Number.isFinite(value) && value > 0 ? value : null);
+
+  function parse(json: any): Figures | null {
+    const raw = json?.data
+      ? json.data
+      : { accounts: json?.moncycle_app_nb_compte, cycles: json?.moncycle_app_nb_cycle, observations: json?.moncycle_app_nb_total_observation };
+    const accounts = count(raw?.accounts);
+    const cycles = count(raw?.cycles);
+    const observations = count(raw?.observations);
+    return accounts && cycles && observations ? { accounts, cycles, observations } : null;
+  }
+
+  async function load(): Promise<Figures | null> {
+    for (const url of endpoints) {
+      try {
+        const response = await fetch(url, { headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(8000) });
+        if (!response.ok) continue;
+        const figures = parse(await response.json());
+        if (figures) return figures;
+      } catch {
+        // Try the next endpoint
+      }
+    }
+    return null;
+  }
+
+  const blocks = document.querySelectorAll<HTMLElement>('[data-live-figures]');
+  if (blocks.length) {
+    load().then((figures) => {
+      if (!figures) return;
+      blocks.forEach((block) => {
+        const format = new Intl.NumberFormat(block.dataset.locale);
+        block.querySelectorAll<HTMLElement>('[data-figure]').forEach((el) => {
+          el.textContent = format.format(figures[el.dataset.figure as keyof Figures]);
+        });
+        const note = block.querySelector('[data-figures-note]');
+        if (note && block.dataset.liveNote) note.textContent = block.dataset.liveNote;
+      });
+    });
+  }
+</script>
