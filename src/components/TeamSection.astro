@@ -22,8 +22,6 @@ interface Member {
   /** Optional photo in public/images/ (e.g. /images/team/jean.jpg); initials are shown otherwise */
   photo?: string;
   links: { network: Network; url: string; handle?: string }[];
-  /** Placeholder entry (dummy data), still to be replaced */
-  todo?: boolean;
 }
 
 /** Social networks: display name and icon (24×24, stroke) */
@@ -57,10 +55,26 @@ const members: Member[] = [
       { network: 'linkedin', url: 'https://www.linkedin.com/in/m-jean/' },
     ],
   },
-  // TODO: placeholder members, replace with the real names, roles and social links (then remove `todo: true`)
-  { firstName: 'Camille', lastName: 'Martin', role: { fr: 'Trésorière', en: 'Treasurer' }, links: [], todo: true },
-  { firstName: 'Alex', lastName: 'Durand', role: { fr: 'Secrétaire', en: 'Secretary' }, links: [], todo: true },
-  { firstName: 'Sam', lastName: 'Leroy', role: { fr: 'Membre du bureau', en: 'Board member' }, links: [], todo: true },
+  {
+    firstName: 'Arnaud',
+    lastName: 'de Ruffray',
+    role: { fr: 'Trésorier', en: 'Treasurer' },
+    job: { fr: 'Développeur iOS', en: 'iOS developer' },
+    links: [{ network: 'linkedin', url: 'https://www.linkedin.com/in/arnaudderuffray/' }],
+  },
+  {
+    firstName: 'Yves',
+    lastName: 'Delvaux',
+    role: { fr: 'Membre du bureau', en: 'Board member' },
+    job: { fr: 'Développeur Android', en: 'Android developer' },
+    links: [{ network: 'linkedin', url: 'https://www.linkedin.com/in/yves-delvaux-4a31042a/' }],
+  },
+  {
+    firstName: 'Tanguy',
+    lastName: 'Lepoutre',
+    role: { fr: 'Secrétaire', en: 'Secretary' },
+    links: [{ network: 'linkedin', url: 'https://www.linkedin.com/in/tanguy-lepoutre/' }],
+  },
 ];
 
 ---

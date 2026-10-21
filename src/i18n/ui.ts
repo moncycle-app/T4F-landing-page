@@ -23,7 +23,7 @@ export type SectionKey = keyof (typeof sectionIds)[typeof defaultLang];
 export const enabledSections: Record<SectionKey, boolean> = {
   association: true,
   projects: true,
-  team: false, // unfinished, hidden for now
+  team: true,
   donate: false, // unfinished, hidden for now (also hides the donate buttons)
   contact: true,
 };
