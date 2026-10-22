@@ -128,7 +128,7 @@ export const ui = {
     'news.title': 'Actualités',
     'news.description': 'Les actualités de l’association Tech 4 Fertility : nouveautés et mises à jour sur nos projets.',
     'news.empty': 'Aucune actualité pour le moment.',
-    'news.new': 'Nouveau',
+    'news.new': 'Actualités',
     'news.back': '← Toutes les actualités',
     'news.closeImage': "Fermer l'image",
     'news.readMore': 'Lire la suite',
