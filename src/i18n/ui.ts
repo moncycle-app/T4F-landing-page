@@ -38,6 +38,8 @@ export const links = {
   moncycleTosFr: 'https://www.moncycle.app/ToS/term_of_service_fr.html',
   moncycleTosEn: 'https://www.moncycle.app/ToS/term_of_service_en.html',
   moncycleSource: 'https://github.com/moncycle-app/backend-api-web-app',
+  moncycleLlmsEn: 'https://moncycle.app/llms.txt',
+  moncycleLlmsFr: 'https://moncycle.app/fr/llms.txt',
 } as const;
 
 /** UI strings. Every key must exist in both languages (an empty string means "not shown"). */
