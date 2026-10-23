@@ -1,12 +1,12 @@
 ---
 title: "moncycle.app v15 : les nouveautés et le tri de vos sensations"
-description: "La version 15 de moncycle.app est en ligne. Voici les nouveautés, comment donner un type (sensation ou observation) à vos anciens mots, et ce qui change dans les conditions d’utilisation."
-pubDate: 2026-10-20
+description: "moncycle.app v15 est en ligne. Vos sensations et observations apparaissent barrées ? Elles sont à classer : lisez cet article pour comprendre pourquoi et comment les trier dans les réglages. Aussi : saisie sans réseau, exports enrichis et nouvelles conditions d’utilisation."
+pubDate: 2026-10-23
 translationKey: moncycle-v15
-draft: true
+draft: false
 ---
 
-La version 15 de moncycle.app est en ligne. Vous vous connectez comme d’habitude et vos cycles sont là. Une seule chose demande un peu de votre temps : les mots que vous écriviez dans le champ « sensation » doivent maintenant recevoir un type. La deuxième partie vous explique comment faire.
+La version 15 de moncycle.app est en ligne. Vous vous connectez comme d’habitude et vos cycles sont là. Une seule chose demande un peu de votre temps : les mots que vous écriviez dans le champ « sensation » doivent maintenant être classés : sensation ou observation. La deuxième partie vous explique comment faire.
 
 ## Les nouveautés
 
@@ -21,7 +21,7 @@ La version 15 de moncycle.app est en ligne. Vous vous connectez comme d’habitu
 
 ### Ce qui a changé
 
-Avant, chaque jour avait un champ de texte libre pour les sensations. Maintenant, chaque mot est un mot clé que vous cochez dans le formulaire du jour. Chaque mot clé a un type :
+Avant, chaque jour avait un champ de texte libre pour les sensations. Maintenant, chaque mot est un mot clé que vous cochez dans le formulaire du jour. Chaque mot clé est soit une sensation, soit une observation :
 
 - 🧠 **Sensation** : ce que vous ressentez (sec, humide, glissant).
 - 👀 **Observation** : ce que vous voyez (crémeux, blanc, transparent, filant).
@@ -32,19 +32,21 @@ Ce classement permet des exports et des graphiques fiables, et l’échange avec
 
 Rien n’a été perdu. Votre ancien texte a été découpé aux virgules, et chaque mot est devenu un mot clé relié aux mêmes jours. L’application ne peut pas deviner si un mot est une sensation ou une observation : ces mots clés sont marqués ❓ « à définir ». Ils apparaissent barrés dans le tableau, et sous « Autre » dans le formulaire du jour.
 
-Ils continuent de fonctionner. Il vaut tout de même mieux les trier avant d’exporter : dans un export, un mot sans type est écrit dans le commentaire du jour et ne redevient pas un mot clé à la réimportation.
+Ils continuent de fonctionner. Il vaut tout de même mieux les trier avant d’exporter : dans un export, un mot non classé est écrit dans le commentaire du jour et ne redevient pas un mot clé à la réimportation.
 
 ### Comment faire
 
 1. Ouvrez **Réglages**, puis **Sensations & observations**.
 2. Chaque ligne affiche un mot et, à droite, le nombre de jours qui l’utilisent. Commencez par les plus utilisés.
-3. Touchez un mot. Un menu de type et trois boutons apparaissent.
+3. Touchez un mot. Un menu pour le classer et trois boutons apparaissent.
 
-![La liste des mots clés dans les réglages : le mot « humide » est ouvert et montre son menu de type, le menu Fusionner, le bouton commentaire et le bouton supprimer](/images/news/IMG_7768.PNG "m")
+![La liste des mots clés dans les réglages : le mot « humide » est ouvert et montre le menu pour le classer, le menu Fusionner, le bouton commentaire et le bouton supprimer](/images/news/IMG_7768.PNG "m")
 
 Pour chaque mot, vous pouvez :
 
-- **choisir son type** dans le menu : c’est enregistré aussitôt ;
+- **le classer** dans le menu, c’est enregistré aussitôt :
+  - 🧠 **Sensation** si c’est ce que vous ressentez (sec, humide, glissant) ;
+  - 👀 **Observation** si c’est ce que vous voyez (crémeux, blanc, transparent, filant) ;
 - **le renommer** en modifiant le texte de la ligne, ce qui corrige tous les jours concernés ;
 - **le fusionner (🔀)** dans un autre mot clé, pour regrouper les doublons comme « Humide » et « humide » ;
 - **le déplacer dans le commentaire (💬)** s’il ne s’agit pas d’un vrai mot clé, par exemple « un peu sec le soir » ;
@@ -54,7 +56,7 @@ Quand il ne reste plus de ❓, le travail est terminé.
 
 ### À savoir avant de commencer
 
-- Changer un type est toujours possible, autant de fois que vous voulez.
+- Vous pouvez changer le classement d’un mot à tout moment, autant de fois que vous voulez.
 - Fusionner, déplacer dans le commentaire et supprimer sont définitifs. L’application demande une confirmation et détaille ce qu’elle va faire.
 - Si vous voulez une copie de sécurité, exportez d’abord votre historique au format NFP (*Réglages*, puis *Mes données*).
 - Pendant une fusion ou un déplacement, gardez la page ouverte. Si la connexion coupe, rien n’est supprimé : il suffit de relancer l’action.
@@ -72,3 +74,7 @@ La version 15 s’accompagne de nouvelles conditions d’utilisation et d’une 
 - un compte inactif pendant 4 ans est supprimé, après un avertissement par e-mail.
 
 Les comptes existants recevront un e-mail avec la date d’application des nouvelles conditions. Voir aussi les [mentions légales](/fr/legal/).
+
+## Pour les personnes techniques
+
+Le code de la version 15 est publié sur GitHub, avec des [notes de version techniques](https://github.com/moncycle-app/backend-api-web-app/releases/tag/v15). Les nouvelles images Docker sont disponibles sur [Docker Hub](https://hub.docker.com/layers/jeanio/moncycle.app/v15/images/sha256-22563f2238c2678ed044bb151fa2d5649f465dfb6cdec2c3d512f652221b2336).

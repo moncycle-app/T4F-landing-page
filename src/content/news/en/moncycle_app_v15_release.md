@@ -1,12 +1,12 @@
 ---
 title: "moncycle.app v15: what's new and how to sort your sensations"
-description: "moncycle.app version 15 is online. Here is what's new, how to give a type (sensation or observation) to your old words, and what changes in the terms of service."
-pubDate: 2026-10-20
+description: "moncycle.app v15 is online. Are your sensations and observations crossed out? They need sorting: read this post to understand why and how to sort them in the settings. Also: entries without a network, more complete exports and the new terms of service."
+pubDate: 2026-10-23
 translationKey: moncycle-v15
-draft: true
+draft: false
 ---
 
-Version 15 of moncycle.app is online. You sign in as usual and your cycles are there. Only one thing needs a little of your time: the words you used to write in the "sensation" field now need a type. The second part explains how.
+Version 15 of moncycle.app is online. You sign in as usual and your cycles are there. Only one thing needs a little of your time: the words you used to write in the "sensation" field now need to be sorted: sensation or observation. The second part explains how.
 
 The app is in French, so the button names below are given in French.
 
@@ -23,7 +23,7 @@ The app is in French, so the button names below are given in French.
 
 ### What changed
 
-Before, each day had a free text field for sensations. Now each word is a keyword that you tick in the day form. Each keyword has a type:
+Before, each day had a free text field for sensations. Now each word is a keyword that you tick in the day form. Each keyword is either a sensation or an observation:
 
 - 🧠 **Sensation**: what you feel (dry, damp, slippery).
 - 👀 **Observation**: what you see (creamy, white, transparent, stretchy).
@@ -34,19 +34,21 @@ This classification allows reliable exports and charts, and exchange with other 
 
 Nothing was lost. Your old text was split at the commas, and each word became a keyword linked to the same days. The app cannot guess whether a word is a sensation or an observation, so these keywords are marked ❓ "à définir" (to be defined). They appear crossed out in the table, and under "Autre" in the day form.
 
-They keep working. It is still better to sort them before exporting: in an export, a word without a type is written into the day's comment and does not become a keyword again when re-imported.
+They keep working. It is still better to sort them before exporting: in an export, an unsorted word is written into the day's comment and does not become a keyword again when re-imported.
 
 ### How to do it
 
 1. Open **Réglages** (settings), then **Sensations & observations**.
 2. Each line shows a word and, on the right, the number of days that use it. Start with the most used.
-3. Tap a word. A type menu and three buttons appear.
+3. Tap a word. A menu to sort it and three buttons appear.
 
-![The keyword list in the settings: the word "humide" is open and shows its type menu, the merge menu, the comment button and the delete button](/images/news/IMG_7768.PNG "m")
+![The keyword list in the settings: the word "humide" is open and shows the menu to sort it, the merge menu, the comment button and the delete button](/images/news/IMG_7768.PNG "m")
 
 For each word, you can:
 
-- **choose its type** in the menu: it is saved immediately;
+- **sort it** in the menu, it is saved immediately:
+  - 🧠 **Sensation** if it is what you feel (dry, damp, slippery);
+  - 👀 **Observation** if it is what you see (creamy, white, transparent, stretchy);
 - **rename it** by editing the text of the line, which corrects all the days concerned;
 - **merge it (🔀)** into another keyword, to group duplicates such as "Humide" and "humide";
 - **move it to the comment (💬)** if it is not a real keyword, for example "un peu sec le soir";
@@ -56,7 +58,7 @@ When no ❓ is left, you are done.
 
 ### Good to know before you start
 
-- Changing a type is always possible, as many times as you like.
+- You can change how a word is sorted at any time, as many times as you like.
 - Merging, moving to the comment and deleting are final. The app asks for confirmation and details what it is about to do.
 - If you want a safety copy, first export your history in NFP format (*Réglages*, then *Mes données*).
 - During a merge or a move, keep the page open. If the connection drops, nothing is deleted: just run the action again.
@@ -74,3 +76,7 @@ Version 15 comes with new terms of service and a new privacy policy. You can fin
 - an account inactive for 4 years is deleted, after a warning by e-mail.
 
 Existing accounts will receive an e-mail with the date the new terms apply. See also the [legal information](/en/legal/).
+
+## For technical readers
+
+The version 15 code is published on GitHub, with [technical release notes](https://github.com/moncycle-app/backend-api-web-app/releases/tag/v15). The new Docker images are available on [Docker Hub](https://hub.docker.com/layers/jeanio/moncycle.app/v15/images/sha256-22563f2238c2678ed044bb151fa2d5649f465dfb6cdec2c3d512f652221b2336).
