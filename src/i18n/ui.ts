@@ -137,7 +137,6 @@ export const ui = {
 
     'footer.nav': 'Navigation',
     'footer.projects': 'Projets',
-    'footer.support': 'Soutenir',
     'footer.contact': 'Contact',
     'footer.status': 'Association loi 1901 d’intérêt général',
     'footer.legalLink': 'Mentions légales',
@@ -162,7 +161,7 @@ export const ui = {
     'legal.host.country': 'États-Unis',
     'legal.host.phone': 'Téléphone :',
     'legal.ip.title': 'Propriété intellectuelle',
-    'legal.ip.projects': 'Chaque projet de l’association dispose de sa propre licence (moncycle.app : CC BY-NC-SA 4.0).',
+    'legal.ip.projects': 'Chaque projet de l’association dispose de sa propre licence (moncycle.app : AGPL-3.0-or-later).',
     'legal.privacy.title': 'Données personnelles',
     'legal.privacy.none': 'Ce site ne collecte aucune donnée personnelle, ne dépose aucun cookie et n’utilise aucun outil de mesure d’audience ni aucun traceur.',
     'legal.privacy.lang': 'Seul votre choix de langue, si vous en changez, est enregistré dans votre navigateur (stockage local) ; il n’est jamais transmis.',
@@ -269,7 +268,6 @@ export const ui = {
 
     'footer.nav': 'Navigation',
     'footer.projects': 'Projects',
-    'footer.support': 'Support us',
     'footer.contact': 'Contact',
     'footer.status': 'General-interest non-profit association (loi 1901)',
     'footer.legalLink': 'Legal notice',
@@ -294,7 +292,7 @@ export const ui = {
     'legal.host.country': 'United States',
     'legal.host.phone': 'Phone:',
     'legal.ip.title': 'Intellectual property',
-    'legal.ip.projects': 'Each of the association’s projects has its own licence (moncycle.app: CC BY-NC-SA 4.0).',
+    'legal.ip.projects': 'Each of the association’s projects has its own licence (moncycle.app: AGPL-3.0-or-later).',
     'legal.privacy.title': 'Personal data',
     'legal.privacy.none': 'This website collects no personal data, sets no cookies and uses no analytics or trackers.',
     'legal.privacy.lang': 'Only your language choice, if you change it, is saved in your browser (local storage); it is never sent anywhere.',

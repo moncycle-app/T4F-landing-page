@@ -98,11 +98,15 @@ const sectionLinks = sectionKeys.map((key) => ({
 
     <footer class="foot">
       <div class="wrap">
-        <div class="foot-grid">
+        <div class="foot-cols">
           <div class="foot-brand">
             <p class="foot-name"><Logo /> {t('site.title')}</p>
             <p>{t('site.tagline')}</p>
-            <p class="foot-badge">{t('site.badge')}</p>
+            {enabledSections.donate && (
+              <a class="foot-donate" href={links.helloAsso} target="_blank" rel="noopener">
+                {t('nav.donate')}<span class="sr-only"> {t('a11y.newTab')}</span>
+              </a>
+            )}
           </div>
 
           <nav class="foot-col" aria-labelledby="foot-nav-title">
@@ -110,7 +114,6 @@ const sectionLinks = sectionKeys.map((key) => ({
             <ul>
               {sectionLinks.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
               <li><a href={newsPath(lang)}>{t('nav.news')}</a></li>
-              <li><a href={newsRssPath(lang)}>{t('news.rss')}</a></li>
             </ul>
           </nav>
 
@@ -119,14 +122,6 @@ const sectionLinks = sectionKeys.map((key) => ({
             <ul>
               <li><a href={links.moncycle} target="_blank" rel="noopener">moncycle.app<span class="sr-only"> {t('a11y.newTab')}</span></a></li>
             </ul>
-            {enabledSections.donate && (
-              <>
-                <h2>{t('footer.support')}</h2>
-                <a class="foot-donate" href={links.helloAsso} target="_blank" rel="noopener">
-                  {t('nav.donate')}<span class="sr-only"> {t('a11y.newTab')}</span>
-                </a>
-              </>
-            )}
           </div>
 
           <div class="foot-col">
@@ -138,12 +133,13 @@ const sectionLinks = sectionKeys.map((key) => ({
           </div>
         </div>
 
-        <p class="foot-legal">
-          <span>© {new Date().getFullYear()} {t('site.title')}</span>
-          <span>{t('footer.status')}</span>
-          <span>RNA W271007328</span>
-          <a href={localizedPath(lang, 'legal')} aria-current={section === 'legal' ? 'page' : undefined}>{t('footer.legalLink')}</a>
-        </p>
+        <div class="foot-bottom">
+          <p>© {new Date().getFullYear()} {t('site.title')} · {t('footer.status')}</p>
+          <ul>
+            <li><a href={localizedPath(lang, 'legal')} aria-current={section === 'legal' ? 'page' : undefined}>{t('footer.legalLink')}</a></li>
+            <li><a href={newsRssPath(lang)}>{t('news.rss')}</a></li>
+          </ul>
+        </div>
       </div>
     </footer>
 
