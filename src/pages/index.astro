@@ -5,8 +5,12 @@
  * Without JavaScript, the meta refresh sends visitors to the default language.
  */
 import '../styles/global.css';
+import SocialMeta from '../components/SocialMeta.astro';
 import { defaultLang, languages, langs } from '../i18n/ui';
-import { localizedPath } from '../i18n/utils';
+import { localizedPath, useTranslations } from '../i18n/utils';
+
+// Chat apps don't follow the redirect: the shared link preview is the default language's home page
+const t = useTranslations(defaultLang);
 ---
 
 <!doctype html>
@@ -20,6 +24,8 @@ import { localizedPath } from '../i18n/utils';
     {langs.map((code) => (
       <link rel="alternate" hreflang={code} href={new URL(localizedPath(code), Astro.site)} />
     ))}
+    <meta name="description" content={t('home.description')} />
+    <SocialMeta lang={defaultLang} url={new URL('/', Astro.site)} title={t('home.title')} description={t('home.description')} />
     <link rel="icon" href="/images/favicon.ico" sizes="32x32" media="(prefers-color-scheme: light)" />
     <link rel="icon" href="/images/favicon-light.ico" sizes="32x32" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />

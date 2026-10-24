@@ -1,0 +1,39 @@
+---
+/**
+ * Open Graph / X tags: what chat apps and social networks show when a link is shared.
+ * Images come from scripts/social-images/: 1.91:1 for most apps, then a square one (WhatsApp, iMessage…).
+ */
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  url: URL;
+  title: string;
+  description: string;
+}
+
+const { lang, url, title, description } = Astro.props;
+const t = useTranslations(lang);
+const image = (name: string) => new URL(`/images/social/${name}-${lang}.jpg`, Astro.site);
+---
+
+<meta property="og:type" content="website" />
+<meta property="og:url" content={url} />
+<meta property="og:site_name" content={t('site.title')} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_GB'} />
+<meta property="og:image" content={image('og')} />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={t('site.imageAlt')} />
+<meta property="og:image" content={image('square')} />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="1200" />
+<meta property="og:image:alt" content={t('site.imageAlt')} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content={image('x')} />
+<meta name="twitter:image:alt" content={t('site.imageAlt')} />

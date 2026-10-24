@@ -30,6 +30,8 @@ How to write a news post (for non-developers) is explained in `README.md`.
 ```
 public/                       Copied as-is to dist/
   images/                     All images (favicons, logo, news images) → dist/images/
+  images/social/              Link preview images (og:image, twitter:image), one set per language
+scripts/social-images/        HTML template + script that renders images/social/ (see "Link previews")
 src/
   assets/fonts/               Figtree variable font (inlined into the CSS at build time)
   content.config.ts           "news" collection schema
@@ -59,6 +61,18 @@ src/
   meant to be served by a web server at the domain root (use `npm run preview` locally).
   Opening HTML files directly from disk shows the styled page, but images and navigation won't work.
 - Put every image in `public/images/` (sub-folders allowed) and reference it as `/images/…`.
+
+## Link previews
+
+`SocialMeta.astro` (used by `BaseLayout` and the root redirect page) declares the images shown when a link is shared (WhatsApp, Facebook, LinkedIn, X, Slack…),
+in the page language: `og-<lang>.jpg` (1200×630, the standard 1.91:1 card), `square-<lang>.jpg` (1200×1200,
+second `og:image` for apps that crop to a square) and `x-<lang>.jpg` (1200×675, `twitter:image`).
+Keep each file under ~300 KB (WhatsApp silently drops heavier images).
+
+They are rendered from `scripts/social-images/template.html` with headless Chrome:
+run `scripts/social-images/generate.sh` on macOS (it uses `sips`; set `CHROME` if Chrome is not in `/Applications`).
+The texts in the template mirror `site.badge` and `site.tagline`: update them together.
+Chat apps cache previews: after changing an image, refresh it with Facebook's Sharing Debugger / LinkedIn's Post Inspector.
 
 ## Internationalization
 

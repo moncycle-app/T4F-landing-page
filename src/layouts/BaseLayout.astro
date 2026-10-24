@@ -4,6 +4,7 @@ import Logo from '../components/Logo.astro';
 import LanguagePicker from '../components/LanguagePicker.astro';
 import ContactButton from '../components/ContactButton.astro';
 import PostalAddress from '../components/PostalAddress.astro';
+import SocialMeta from '../components/SocialMeta.astro';
 import { enabledSections, langs, links, sectionKeys, type Lang, type UiKey } from '../i18n/ui';
 import { localizedPath, sectionPath, useTranslations } from '../i18n/utils';
 import { newsPath, newsRssPath, newsSegment } from '../i18n/news';
@@ -54,13 +55,7 @@ const sectionLinks = sectionKeys.map((key) => ({
       <link rel="alternate" hreflang={code} href={new URL(alternates[code], Astro.site)} />
     ))}
     <link rel="alternate" hreflang="x-default" href={new URL('/', Astro.site)} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:site_name" content={t('site.title')} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL('/images/t4f-logo.png', Astro.site)} />
-    <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_GB'} />
+    <SocialMeta lang={lang} url={canonical} title={title} description={description} />
     <link rel="icon" href="/images/favicon.ico" sizes="32x32" media="(prefers-color-scheme: light)" />
     <link rel="icon" href="/images/favicon-light.ico" sizes="32x32" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
