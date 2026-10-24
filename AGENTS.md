@@ -19,8 +19,10 @@ How to write a news post (for non-developers) is explained in `README.md`.
 | Production build (`./dist`)  | `npm run build`                               |
 | Preview the production build | `npm run preview`                             |
 | Type check only              | `npx astro check`                             |
+| Check link previews (`dist`) | `npm run test:og` (also run by `npm run build`) |
 
-- `npm run build` runs `astro check` then `astro build`: **a passing build means types are valid**.
+- `npm run build` runs `astro check`, `astro build` then `npm run test:og`: **a passing build means types
+  and link previews are valid**.
   Run it before considering a task done.
 - `package-lock.json` is committed; only change it through `npm install`.
 - `@astrojs/check` does not support TypeScript 7 yet: keep `typescript` on `^6`.
@@ -30,8 +32,7 @@ How to write a news post (for non-developers) is explained in `README.md`.
 ```
 public/                       Copied as-is to dist/
   images/                     All images (favicons, logo, news images) → dist/images/
-  images/social/              Link preview images (og:image, twitter:image), one set per language
-scripts/social-images/        HTML template + script that renders images/social/ (see "Link previews")
+scripts/test-og.mjs           Checks the link preview tags and images of every page in dist/ (see "Link previews")
 src/
   assets/fonts/               Figtree variable font (inlined into the CSS at build time)
   content.config.ts           "news" collection schema
@@ -40,6 +41,7 @@ src/
   i18n/ui.ts                  Languages, UI strings (fr/en), home section anchors, shared external links
   i18n/utils.ts               Helpers: useTranslations, localizedPath, formatDate…
   i18n/news.ts                News helpers: newsSegment, newsPath, getPosts, postLang, postSlug
+  social/                     Link preview images: list of page images (images.ts), renderer (render.ts)
   layouts/BaseLayout.astro    <head> (SEO, hreflang), header, footer
   components/                 Logo, language picker, anti-spam e-mail button, home page sections
                               (*Section.astro: projects and team members are data arrays inside)
@@ -64,15 +66,28 @@ src/
 
 ## Link previews
 
-`SocialMeta.astro` (used by `BaseLayout` and the root redirect page) declares the images shown when a link is shared (WhatsApp, Facebook, LinkedIn, X, Slack…),
-in the page language: `og-<lang>.jpg` (1200×630, the standard 1.91:1 card), `square-<lang>.jpg` (1200×1200,
-second `og:image` for apps that crop to a square) and `x-<lang>.jpg` (1200×675, `twitter:image`).
-Keep each file under ~300 KB (WhatsApp silently drops heavier images).
+`SocialMeta.astro` (used by `BaseLayout` and the root redirect page) declares what is shown when a link is shared
+(WhatsApp, iMessage, Signal, Facebook, LinkedIn, X, Slack, Discord…), right after `<meta charset>` and `viewport`
+(WhatsApp only reads the beginning of the page). One image per page, the same for every platform:
 
-They are rendered from `scripts/social-images/template.html` with headless Chrome:
-run `scripts/social-images/generate.sh` on macOS (it uses `sips`; set `CHROME` if Chrome is not in `/Applications`).
-The texts in the template mirror `site.badge` and `site.tagline`: update them together.
-Chat apps cache previews: after changing an image, refresh it with Facebook's Sharing Debugger / LinkedIn's Post Inspector.
+- **Exactly one `og:image`**, also used as `twitter:image` (`twitter:card` = `summary_large_image`).
+  Several `og:image` make iMessage show a mosaic and other apps pick one at random.
+- **1200×630 JPEG under 300 KB** (WhatsApp silently drops heavier images): one size fits every platform.
+  The content is centred and kept clear of the top and bottom edges (X crops to 2:1, some apps to a square).
+- `og:title` is the page `<title>` without its " | Tech 4 Fertility" suffix (the name is in `og:site_name`).
+
+The images are rendered at build time (`satori` → `@resvg/resvg-js` → `sharp`) in the site's dark theme by
+`src/social/render.ts`, and served by `src/pages/images/og/[image].jpg.ts` as `/images/og/<page>.<hash>.jpg`.
+`src/social/images.ts` lists them: each language's home page (`social.badge` + `site.tagline`), news list and legal page,
+and every news post (title + date, automatic). Other pages (404…) use their language's home page image; when
+adding a page, add its entry there. The content hash in the file name changes with the image, so chat apps and
+social networks, which cache previews by URL, fetch the new one.
+
+`npm run build` ends with `npm run test:og` (`scripts/test-og.mjs`), which fails if a page in `dist/` has a missing tag,
+several `og:image`, a non-HTTPS URL, or an image that is missing, not 1200×630, not a JPEG, or 300 KB or more.
+
+After deploying, refresh the cached previews with Facebook's Sharing Debugger ("Scrape Again") and LinkedIn's
+Post Inspector; test WhatsApp, iMessage, Signal and Telegram with a parameter appended to the link (`?v=2`).
 
 ## Internationalization
 
@@ -86,7 +101,8 @@ Chat apps cache previews: after changing an image, refresh it with Facebook's Sh
 - Home section anchors are translated (`sectionIds` in `src/i18n/ui.ts`, e.g. `/fr/#projets`, `/en/#projects`):
   link to them with `sectionPath(lang, 'projects')`.
 - New pages go under `src/pages/[lang]/` and export `getStaticPaths = langStaticPaths`.
-  Also list them in `src/pages/llms.txt.ts` (news posts are listed automatically).
+  Also list them in `src/pages/llms.txt.ts` and give them a link preview image in `src/social/images.ts`
+  (news posts are listed automatically in both).
 - By default the language picker points to the same path in the other language. If the URLs differ
   (news section, news posts), pass `alternates` to `BaseLayout`.
 

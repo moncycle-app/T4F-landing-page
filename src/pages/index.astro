@@ -18,6 +18,7 @@ const t = useTranslations(defaultLang);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SocialMeta lang={defaultLang} url={new URL('/', Astro.site)} title={t('home.title')} description={t('home.description')} />
     <title>Tech 4 Fertility</title>
     <meta name="robots" content="noindex, follow" />
     <link rel="canonical" href={new URL(localizedPath(defaultLang), Astro.site)} />
@@ -25,10 +26,10 @@ const t = useTranslations(defaultLang);
       <link rel="alternate" hreflang={code} href={new URL(localizedPath(code), Astro.site)} />
     ))}
     <meta name="description" content={t('home.description')} />
-    <SocialMeta lang={defaultLang} url={new URL('/', Astro.site)} title={t('home.title')} description={t('home.description')} />
     <link rel="icon" href="/images/favicon.ico" sizes="32x32" media="(prefers-color-scheme: light)" />
     <link rel="icon" href="/images/favicon-light.ico" sizes="32x32" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
     <script is:inline>
       var langs = document.documentElement.getAttribute('data-langs').split(' '), fallback = document.documentElement.getAttribute('data-default');
       var lang;

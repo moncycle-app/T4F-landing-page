@@ -1,10 +1,14 @@
 ---
 /**
  * Open Graph / X tags: what chat apps and social networks show when a link is shared.
- * Images come from scripts/social-images/: 1.91:1 for most apps, then a square one (WhatsApp, iMessage…).
+ * One 1200×630 JPEG per page (src/social/images.ts), also used as twitter:image: a single og:image,
+ * otherwise iMessage shows a mosaic and other apps pick one at random.
+ * Keep these tags right after <meta charset> and viewport: WhatsApp only reads the beginning of the page.
  */
 import type { Lang } from '../i18n/ui';
 import { useTranslations } from '../i18n/utils';
+import { pageImage } from '../social/images';
+import { HEIGHT, WIDTH } from '../social/render';
 
 interface Props {
   lang: Lang;
@@ -15,25 +19,25 @@ interface Props {
 
 const { lang, url, title, description } = Astro.props;
 const t = useTranslations(lang);
-const image = (name: string) => new URL(`/images/social/${name}-${lang}.jpg`, Astro.site);
+// The site name is in og:site_name: drop the " | Tech 4 Fertility" suffix of <title> (iMessage shows ~44 characters)
+const suffix = ` | ${t('site.title')}`;
+const ogTitle = title.endsWith(suffix) ? title.slice(0, -suffix.length) : title;
+const image = await pageImage(url.pathname, lang);
+const imageUrl = new URL(image.path, Astro.site);
 ---
 
 <meta property="og:type" content="website" />
 <meta property="og:url" content={url} />
-<meta property="og:site_name" content={t('site.title')} />
-<meta property="og:title" content={title} />
+<meta property="og:title" content={ogTitle} />
 <meta property="og:description" content={description} />
+<meta property="og:site_name" content={t('site.title')} />
 <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_GB'} />
-<meta property="og:image" content={image('og')} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:secure_url" content={imageUrl} />
 <meta property="og:image:type" content="image/jpeg" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content={t('site.imageAlt')} />
-<meta property="og:image" content={image('square')} />
-<meta property="og:image:type" content="image/jpeg" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="1200" />
-<meta property="og:image:alt" content={t('site.imageAlt')} />
+<meta property="og:image:width" content={String(WIDTH)} />
+<meta property="og:image:height" content={String(HEIGHT)} />
+<meta property="og:image:alt" content={image.alt} />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content={image('x')} />
-<meta name="twitter:image:alt" content={t('site.imageAlt')} />
+<meta name="twitter:image" content={imageUrl} />
+<meta name="twitter:image:alt" content={image.alt} />

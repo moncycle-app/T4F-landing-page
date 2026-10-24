@@ -44,6 +44,7 @@ const sectionLinks = sectionKeys.map((key) => ({
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <SocialMeta lang={lang} url={canonical} title={title} description={description} />
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="color-scheme" content="light dark" />
@@ -55,7 +56,6 @@ const sectionLinks = sectionKeys.map((key) => ({
       <link rel="alternate" hreflang={code} href={new URL(alternates[code], Astro.site)} />
     ))}
     <link rel="alternate" hreflang="x-default" href={new URL('/', Astro.site)} />
-    <SocialMeta lang={lang} url={canonical} title={title} description={description} />
     <link rel="icon" href="/images/favicon.ico" sizes="32x32" media="(prefers-color-scheme: light)" />
     <link rel="icon" href="/images/favicon-light.ico" sizes="32x32" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
